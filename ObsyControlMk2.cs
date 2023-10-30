@@ -1395,11 +1395,12 @@ namespace Observatory
             try
             {
                 refreshshutterstate();
+                refreshmount();
+                refreshrelay(); 
                 refreshweather();
                 refreshsafetymonitor();
                 goodConditions = noRain && clearAir && clearSky;  // amalgamation of air, sky and weather
-                refreshmount();
-                refreshrelay(); // reduce frequency to avoid issues with Pegasus server (experiment)
+                            
                 automount();
                 autoroof();
             }
@@ -1412,17 +1413,6 @@ namespace Observatory
         // small routine to update relays, in case there is a parallel hub command - every 4 cycles
         private void refreshrelay()
         {
-            /*try   // one at a time
-            {
-                if (relayconnected)
-                    {
-                    if (relayinterval > 3) relayinterval=0;
-                    getrelaystate(relayinterval);
-                    showrelaystate();
-                    relayinterval++;
-                }
-            }
-            */
             try  // all at once
             {
                 if (relayconnected)
@@ -1610,29 +1600,33 @@ namespace Observatory
         {
             int index;
             samplecount += 1;
-            if ((samplecount < 7200) && (samplecount % 60 == 0)) //(every minute)
+            if(samplecount > 59)
             {
-                index = ((int)((samplecount / 60.0) - (samplecount % 60)));
-                tempvalues[index] = Math.Round(weather.Temperature, 2);
-                humidvalues[index] = Math.Round(weather.Humidity, 2);
-                dewvalues[index] = Math.Round(weather.DewPoint, 2);
-                SQMvalues[index] = Math.Round(weather.SkyQuality, 2);
-            }
-            if ((samplecount >= 7200) && (samplecount % 60 == 0))
-            {
-                for (int i = 0; i < 119; i++)  // shift left
+                if ((samplecount < 7200) && (samplecount % 60 == 0)) //(every minute)
                 {
-                    tempvalues[i] = tempvalues[i + 1];
-                    humidvalues[i] = humidvalues[i + 1];
-                    dewvalues[i] = dewvalues[i + 1];
-                    SQMvalues[i] = SQMvalues[i + 1];
+                    index = ((int)((samplecount / 60.0) - (samplecount % 60)));
+                    tempvalues[index] = Math.Round(weather.Temperature, 2);
+                    humidvalues[index] = Math.Round(weather.Humidity, 2);
+                    dewvalues[index] = Math.Round(weather.DewPoint, 2);
+                    SQMvalues[index] = Math.Round(weather.SkyQuality, 2);
                 }
-                // rhs value is current value
-                tempvalues[119] = Math.Round(weather.Temperature, 2);
-                humidvalues[119] = Math.Round(weather.Humidity, 2);
-                dewvalues[119] = Math.Round(weather.DewPoint, 2);
-                SQMvalues[119] = Math.Round(weather.SkyQuality, 2);
+                if ((samplecount >= 7200) && (samplecount % 60 == 0))
+                {
+                    for (int i = 0; i < 119; i++)  // shift left
+                    {
+                        tempvalues[i] = tempvalues[i + 1];
+                        humidvalues[i] = humidvalues[i + 1];
+                        dewvalues[i] = dewvalues[i + 1];
+                        SQMvalues[i] = SQMvalues[i + 1];
+                    }
+                    // rhs value is current value
+                    tempvalues[119] = Math.Round(weather.Temperature, 2);
+                    humidvalues[119] = Math.Round(weather.Humidity, 2);
+                    dewvalues[119] = Math.Round(weather.DewPoint, 2);
+                    SQMvalues[119] = Math.Round(weather.SkyQuality, 2);
+                }
             }
+            
             switch (charttype) // copy applicable data into chart array
             {
                 case 0:
@@ -1652,12 +1646,15 @@ namespace Observatory
         // updates chart plot, according to the selected data source, does not display zero values.
         private void ChartUpdate()
         {
-            if ((samplecount < 7200) && (samplecount % 60 == 0)) //(every minute)
+            if (samplecount > 59)
             {
-                var arrayNZ = chartvalues.Select(x => x).Where(x => x != 0).ToArray(); // only do non-zero values at the beginning
-                chart1.Series[0].Points.DataBindY(arrayNZ);
+                if ((samplecount < 7200) && (samplecount % 60 == 0)) //(every minute)
+                {
+                    var arrayNZ = chartvalues.Select(x => x).Where(x => x != 0).ToArray(); // only do non-zero values at the beginning
+                    chart1.Series[0].Points.DataBindY(arrayNZ);
+                }
+                if ((samplecount >= 7200) && (samplecount % 60 == 0)) chart1.Series[0].Points.DataBindY(chartvalues);
             }
-            if ((samplecount >= 7200) && (samplecount % 60 == 0)) chart1.Series[0].Points.DataBindY(chartvalues);
         }
         /* updates mount from status
         note that unlike most systems, this uses an amalgamation of the mount position and a separate
