@@ -33,7 +33,7 @@ using System.Windows.Forms;
 // 10.1 - added safety shutdown 
 // 10.2 - modified to use a range of safety monitors but still fires up AAG CoudWatcher if it detect file output
 // 10.5 - delayed AAG graph output for 1 minute to prevent exception, conditional 4-way switch control
-// 10.6 - automatic AAG window positioning and added cloud cover
+// 10.6 - added cloud cover
 
 namespace Observatory
 {
@@ -398,9 +398,6 @@ namespace Observatory
                         oCW = Activator.CreateInstance(foo);
                         oCW.Device_Start();
                         oCW.RecordStart(true);
-                        oCW.WindowNormal();
-                        oCW.WindowLeft(0);
-                        oCW.WindowTop(0);
                         oCW = null;
                         safe = new SafetyMonitor(safetyId);
                         safe.Connected = true;
