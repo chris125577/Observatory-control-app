@@ -396,6 +396,9 @@ namespace Observatory
                         Type foo = Type.GetTypeFromProgID("AAG_CloudWatcher.CloudWatcher");
                         dynamic oCW;
                         oCW = Activator.CreateInstance(foo);
+                        //oCW.WindowNormal();
+                        //oCW.WindowTop(0);
+                        //oCW.WindowLeft(0);
                         oCW.Device_Start();
                         oCW.RecordStart(true);
                         oCW = null;
@@ -1561,7 +1564,7 @@ namespace Observatory
                     temptext.Text = Math.Round(weather.Temperature, 2).ToString() + " °C";
                     humidtext.Text = Math.Round(weather.Humidity, 2).ToString() + " %";
                     sqmtext.Text = Math.Round(weather.SkyQuality, 1).ToString() + " M/asec2";
-                    cloudtext.Text = Math.Round(weather.CloudCover, 0).ToString() + " %";
+                    cloudtext.Text = Math.Round(weather.CloudCover, 1).ToString() + " %";
                     if (weather.Humidity > maxhumidity)
                     {
                         humidtext.BackColor = Color.DarkOrange;
@@ -1612,7 +1615,7 @@ namespace Observatory
             }
             if ((string)btngraphsel.SelectedItem == "cloud cover %")
             {
-                charttype = 3;
+                charttype = 4;
                 chart1.ChartAreas[0].AxisY.Minimum = 0;
                 chart1.ChartAreas[0].AxisY.Maximum = 100;
             }
@@ -1641,7 +1644,7 @@ namespace Observatory
                     humidvalues[index] = Math.Round(weather.Humidity, 2);
                     dewvalues[index] = Math.Round(weather.DewPoint, 2);
                     SQMvalues[index] = Math.Round(weather.SkyQuality, 2);
-                    cloudvalues[index] = Math.Round(weather.CloudCover, 0);
+                    cloudvalues[index] = Math.Round(weather.CloudCover, 1);
                 }
                 if ((samplecount >= 7200) && (samplecount % 60 == 0))
                 {
