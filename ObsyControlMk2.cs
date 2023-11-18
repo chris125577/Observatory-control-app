@@ -267,6 +267,8 @@ namespace Observatory
                     mountext.Text = "connected";
                     btnConnMount.ForeColor = Color.Gray;
                     btnDiscMount.ForeColor = Color.White;
+                    if(!mount.CanFindHome || !mount.CanPark || !mount.CanPulseGuide)
+                        System.Windows.Forms.MessageBox.Show("check mount park/home/guide settings");
                 }
                 else
                 {
