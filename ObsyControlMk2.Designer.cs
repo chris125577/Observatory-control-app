@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Obsyform));
             this.settupgroup = new System.Windows.Forms.GroupBox();
             this.btnRelaySel = new System.Windows.Forms.Button();
@@ -39,13 +39,13 @@
             this.btnMountSel = new System.Windows.Forms.Button();
             this.btnDomeSel = new System.Windows.Forms.Button();
             this.connectgroup = new System.Windows.Forms.GroupBox();
-            this.btnConnRelay = new System.Windows.Forms.Button();
+            this.btnConnSwitch = new System.Windows.Forms.Button();
             this.btnConnSafety = new System.Windows.Forms.Button();
             this.btnConnWeather = new System.Windows.Forms.Button();
             this.btnConnDome = new System.Windows.Forms.Button();
             this.btnConnMount = new System.Windows.Forms.Button();
             this.disconnectgroup = new System.Windows.Forms.GroupBox();
-            this.btnDiscRelay = new System.Windows.Forms.Button();
+            this.btnDiscSwitch = new System.Windows.Forms.Button();
             this.btnDiscSafety = new System.Windows.Forms.Button();
             this.btnDiscWeather = new System.Windows.Forms.Button();
             this.btnDiscMount = new System.Windows.Forms.Button();
@@ -53,6 +53,8 @@
             this.status = new System.Windows.Forms.Timer(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.CtrlTabPage = new System.Windows.Forms.TabPage();
+            this.skytext = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.sqmtext = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.LogLabel = new System.Windows.Forms.Label();
@@ -88,10 +90,10 @@
             this.StatusLabel = new System.Windows.Forms.Label();
             this.rooflabel = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btnRelay2 = new System.Windows.Forms.Button();
-            this.btnRelay1 = new System.Windows.Forms.Button();
-            this.btnRelay3 = new System.Windows.Forms.Button();
-            this.btnRelay4 = new System.Windows.Forms.Button();
+            this.btnSwitch2 = new System.Windows.Forms.Button();
+            this.btnSwitch1 = new System.Windows.Forms.Button();
+            this.btnSwitch3 = new System.Windows.Forms.Button();
+            this.btnSwitch4 = new System.Windows.Forms.Button();
             this.setuptab = new System.Windows.Forms.TabPage();
             this.miscsetting = new System.Windows.Forms.GroupBox();
             this.btnReset = new System.Windows.Forms.Button();
@@ -115,8 +117,6 @@
             this.btnForcePark = new System.Windows.Forms.Button();
             this.btnForceHome = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.cloudtext = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.settupgroup.SuspendLayout();
             this.connectgroup.SuspendLayout();
             this.disconnectgroup.SuspendLayout();
@@ -167,7 +167,7 @@
             this.btnRelaySel.TabIndex = 7;
             this.btnRelaySel.Text = "Relay";
             this.btnRelaySel.UseVisualStyleBackColor = false;
-            this.btnRelaySel.Click += new System.EventHandler(this.setrelay);
+            this.btnRelaySel.Click += new System.EventHandler(this.setswitch);
             // 
             // btnWeatherSel
             // 
@@ -232,7 +232,7 @@
             // connectgroup
             // 
             this.connectgroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.connectgroup.Controls.Add(this.btnConnRelay);
+            this.connectgroup.Controls.Add(this.btnConnSwitch);
             this.connectgroup.Controls.Add(this.btnConnSafety);
             this.connectgroup.Controls.Add(this.btnConnWeather);
             this.connectgroup.Controls.Add(this.btnConnDome);
@@ -247,20 +247,20 @@
             this.connectgroup.TabStop = false;
             this.connectgroup.Text = "Connect Devices";
             // 
-            // btnConnRelay
+            // btnConnSwitch
             // 
-            this.btnConnRelay.BackColor = System.Drawing.Color.Transparent;
-            this.btnConnRelay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
-            this.btnConnRelay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConnRelay.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnConnRelay.Location = new System.Drawing.Point(305, 23);
-            this.btnConnRelay.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnConnRelay.Name = "btnConnRelay";
-            this.btnConnRelay.Size = new System.Drawing.Size(48, 23);
-            this.btnConnRelay.TabIndex = 9;
-            this.btnConnRelay.Text = "Relay";
-            this.btnConnRelay.UseVisualStyleBackColor = false;
-            this.btnConnRelay.Click += new System.EventHandler(this.connectrelay);
+            this.btnConnSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.btnConnSwitch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.btnConnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConnSwitch.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnConnSwitch.Location = new System.Drawing.Point(305, 23);
+            this.btnConnSwitch.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnConnSwitch.Name = "btnConnSwitch";
+            this.btnConnSwitch.Size = new System.Drawing.Size(48, 23);
+            this.btnConnSwitch.TabIndex = 9;
+            this.btnConnSwitch.Text = "Relay";
+            this.btnConnSwitch.UseVisualStyleBackColor = false;
+            this.btnConnSwitch.Click += new System.EventHandler(this.connectswitch);
             // 
             // btnConnSafety
             // 
@@ -325,7 +325,7 @@
             // disconnectgroup
             // 
             this.disconnectgroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.disconnectgroup.Controls.Add(this.btnDiscRelay);
+            this.disconnectgroup.Controls.Add(this.btnDiscSwitch);
             this.disconnectgroup.Controls.Add(this.btnDiscSafety);
             this.disconnectgroup.Controls.Add(this.btnDiscWeather);
             this.disconnectgroup.Controls.Add(this.btnDiscMount);
@@ -340,20 +340,20 @@
             this.disconnectgroup.TabStop = false;
             this.disconnectgroup.Text = "Disconnect Devices";
             // 
-            // btnDiscRelay
+            // btnDiscSwitch
             // 
-            this.btnDiscRelay.BackColor = System.Drawing.Color.Transparent;
-            this.btnDiscRelay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
-            this.btnDiscRelay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDiscRelay.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.btnDiscRelay.Location = new System.Drawing.Point(305, 26);
-            this.btnDiscRelay.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnDiscRelay.Name = "btnDiscRelay";
-            this.btnDiscRelay.Size = new System.Drawing.Size(48, 23);
-            this.btnDiscRelay.TabIndex = 10;
-            this.btnDiscRelay.Text = "Relay";
-            this.btnDiscRelay.UseVisualStyleBackColor = false;
-            this.btnDiscRelay.Click += new System.EventHandler(this.disconnectrelay);
+            this.btnDiscSwitch.BackColor = System.Drawing.Color.Transparent;
+            this.btnDiscSwitch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gray;
+            this.btnDiscSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDiscSwitch.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnDiscSwitch.Location = new System.Drawing.Point(305, 26);
+            this.btnDiscSwitch.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnDiscSwitch.Name = "btnDiscSwitch";
+            this.btnDiscSwitch.Size = new System.Drawing.Size(48, 23);
+            this.btnDiscSwitch.TabIndex = 10;
+            this.btnDiscSwitch.Text = "Relay";
+            this.btnDiscSwitch.UseVisualStyleBackColor = false;
+            this.btnDiscSwitch.Click += new System.EventHandler(this.disconnectrelay);
             // 
             // btnDiscSafety
             // 
@@ -438,7 +438,7 @@
             // CtrlTabPage
             // 
             this.CtrlTabPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.CtrlTabPage.Controls.Add(this.cloudtext);
+            this.CtrlTabPage.Controls.Add(this.skytext);
             this.CtrlTabPage.Controls.Add(this.label3);
             this.CtrlTabPage.Controls.Add(this.sqmtext);
             this.CtrlTabPage.Controls.Add(this.label2);
@@ -471,6 +471,30 @@
             this.CtrlTabPage.TabIndex = 0;
             this.CtrlTabPage.Text = "Control and Status";
             // 
+            // skytext
+            // 
+            this.skytext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.skytext.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.skytext.Location = new System.Drawing.Point(260, 203);
+            this.skytext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.skytext.Name = "skytext";
+            this.skytext.ReadOnly = true;
+            this.skytext.Size = new System.Drawing.Size(99, 20);
+            this.skytext.TabIndex = 26;
+            this.skytext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label3.Location = new System.Drawing.Point(221, 206);
+            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 27;
+            this.label3.Text = "Sky T";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // sqmtext
             // 
             this.sqmtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -499,7 +523,7 @@
             // 
             this.LogLabel.AutoSize = true;
             this.LogLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.LogLabel.Location = new System.Drawing.Point(211, 237);
+            this.LogLabel.Location = new System.Drawing.Point(178, 263);
             this.LogLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.LogLabel.Name = "LogLabel";
             this.LogLabel.Size = new System.Drawing.Size(25, 13);
@@ -510,13 +534,13 @@
             // 
             this.statusbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.statusbox.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.statusbox.Location = new System.Drawing.Point(243, 237);
+            this.statusbox.Location = new System.Drawing.Point(213, 227);
             this.statusbox.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.statusbox.Multiline = true;
             this.statusbox.Name = "statusbox";
             this.statusbox.ReadOnly = true;
             this.statusbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.statusbox.Size = new System.Drawing.Size(116, 43);
+            this.statusbox.Size = new System.Drawing.Size(146, 53);
             this.statusbox.TabIndex = 21;
             // 
             // groupBox3
@@ -534,7 +558,7 @@
             this.groupBox3.Size = new System.Drawing.Size(192, 81);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Mount / Roof / Relay / Sensors";
+            this.groupBox3.Text = "Mount / Roof / Switch / Sensors";
             // 
             // button2
             // 
@@ -934,10 +958,10 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.groupBox4.Controls.Add(this.btnRelay2);
-            this.groupBox4.Controls.Add(this.btnRelay1);
-            this.groupBox4.Controls.Add(this.btnRelay3);
-            this.groupBox4.Controls.Add(this.btnRelay4);
+            this.groupBox4.Controls.Add(this.btnSwitch2);
+            this.groupBox4.Controls.Add(this.btnSwitch1);
+            this.groupBox4.Controls.Add(this.btnSwitch3);
+            this.groupBox4.Controls.Add(this.btnSwitch4);
             this.groupBox4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.groupBox4.Location = new System.Drawing.Point(10, 278);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -946,72 +970,72 @@
             this.groupBox4.Size = new System.Drawing.Size(364, 54);
             this.groupBox4.TabIndex = 23;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Power Control";
+            this.groupBox4.Text = "Switch Control";
             // 
-            // btnRelay2
+            // btnSwitch2
             // 
-            this.btnRelay2.BackColor = System.Drawing.Color.Gray;
-            this.btnRelay2.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnRelay2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRelay2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRelay2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnRelay2.Location = new System.Drawing.Point(95, 17);
-            this.btnRelay2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnRelay2.Name = "btnRelay2";
-            this.btnRelay2.Size = new System.Drawing.Size(80, 25);
-            this.btnRelay2.TabIndex = 1;
-            this.btnRelay2.Text = "Camera";
-            this.btnRelay2.UseVisualStyleBackColor = false;
-            this.btnRelay2.Click += new System.EventHandler(this.togglerelay1);
+            this.btnSwitch2.BackColor = System.Drawing.Color.Gray;
+            this.btnSwitch2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnSwitch2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSwitch2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSwitch2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSwitch2.Location = new System.Drawing.Point(95, 17);
+            this.btnSwitch2.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnSwitch2.Name = "btnSwitch2";
+            this.btnSwitch2.Size = new System.Drawing.Size(80, 25);
+            this.btnSwitch2.TabIndex = 1;
+            this.btnSwitch2.Text = "Camera";
+            this.btnSwitch2.UseVisualStyleBackColor = false;
+            this.btnSwitch2.Click += new System.EventHandler(this.toggleswitch1);
             // 
-            // btnRelay1
+            // btnSwitch1
             // 
-            this.btnRelay1.BackColor = System.Drawing.Color.Gray;
-            this.btnRelay1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnRelay1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRelay1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRelay1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnRelay1.Location = new System.Drawing.Point(6, 17);
-            this.btnRelay1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnRelay1.Name = "btnRelay1";
-            this.btnRelay1.Size = new System.Drawing.Size(80, 25);
-            this.btnRelay1.TabIndex = 0;
-            this.btnRelay1.Text = "Mount";
-            this.btnRelay1.UseVisualStyleBackColor = false;
-            this.btnRelay1.Click += new System.EventHandler(this.togglerelay0);
+            this.btnSwitch1.BackColor = System.Drawing.Color.Gray;
+            this.btnSwitch1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnSwitch1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSwitch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSwitch1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSwitch1.Location = new System.Drawing.Point(6, 17);
+            this.btnSwitch1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnSwitch1.Name = "btnSwitch1";
+            this.btnSwitch1.Size = new System.Drawing.Size(80, 25);
+            this.btnSwitch1.TabIndex = 0;
+            this.btnSwitch1.Text = "Mount";
+            this.btnSwitch1.UseVisualStyleBackColor = false;
+            this.btnSwitch1.Click += new System.EventHandler(this.toggleswitch0);
             // 
-            // btnRelay3
+            // btnSwitch3
             // 
-            this.btnRelay3.BackColor = System.Drawing.Color.Gray;
-            this.btnRelay3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnRelay3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRelay3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRelay3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnRelay3.Location = new System.Drawing.Point(184, 17);
-            this.btnRelay3.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnRelay3.Name = "btnRelay3";
-            this.btnRelay3.Size = new System.Drawing.Size(80, 25);
-            this.btnRelay3.TabIndex = 2;
-            this.btnRelay3.Text = "Fans";
-            this.btnRelay3.UseVisualStyleBackColor = false;
-            this.btnRelay3.Click += new System.EventHandler(this.togglerelay2);
+            this.btnSwitch3.BackColor = System.Drawing.Color.Gray;
+            this.btnSwitch3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnSwitch3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSwitch3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSwitch3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSwitch3.Location = new System.Drawing.Point(184, 17);
+            this.btnSwitch3.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnSwitch3.Name = "btnSwitch3";
+            this.btnSwitch3.Size = new System.Drawing.Size(80, 25);
+            this.btnSwitch3.TabIndex = 2;
+            this.btnSwitch3.Text = "Fans";
+            this.btnSwitch3.UseVisualStyleBackColor = false;
+            this.btnSwitch3.Click += new System.EventHandler(this.toggleswitch2);
             // 
-            // btnRelay4
+            // btnSwitch4
             // 
-            this.btnRelay4.AutoSize = true;
-            this.btnRelay4.BackColor = System.Drawing.Color.Gray;
-            this.btnRelay4.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnRelay4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRelay4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRelay4.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnRelay4.Location = new System.Drawing.Point(273, 17);
-            this.btnRelay4.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.btnRelay4.Name = "btnRelay4";
-            this.btnRelay4.Size = new System.Drawing.Size(80, 25);
-            this.btnRelay4.TabIndex = 3;
-            this.btnRelay4.Text = "External";
-            this.btnRelay4.UseVisualStyleBackColor = false;
-            this.btnRelay4.Click += new System.EventHandler(this.togglerelay3);
+            this.btnSwitch4.AutoSize = true;
+            this.btnSwitch4.BackColor = System.Drawing.Color.Gray;
+            this.btnSwitch4.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnSwitch4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSwitch4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSwitch4.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSwitch4.Location = new System.Drawing.Point(273, 17);
+            this.btnSwitch4.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.btnSwitch4.Name = "btnSwitch4";
+            this.btnSwitch4.Size = new System.Drawing.Size(80, 25);
+            this.btnSwitch4.TabIndex = 3;
+            this.btnSwitch4.Text = "External";
+            this.btnSwitch4.UseVisualStyleBackColor = false;
+            this.btnSwitch4.Click += new System.EventHandler(this.toggleswitch3);
             // 
             // setuptab
             // 
@@ -1124,7 +1148,7 @@
             "humidity %",
             "dewpoint C",
             "sky quality SQM",
-            "cloud cover %"});
+            "skyT C"});
             this.btngraphsel.Location = new System.Drawing.Point(88, 5);
             this.btngraphsel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.btngraphsel.Name = "btngraphsel";
@@ -1148,29 +1172,29 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.Gray;
             this.chart1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisX.LineWidth = 2;
-            chartArea3.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX2.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LineWidth = 2;
-            chartArea3.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY2.LineColor = System.Drawing.Color.White;
-            chartArea3.BackColor = System.Drawing.Color.DimGray;
-            chartArea3.BorderWidth = 2;
-            chartArea3.Name = "CloudCover";
-            this.chart1.ChartAreas.Add(chartArea3);
+            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisX.LineWidth = 2;
+            chartArea1.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX2.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LineWidth = 2;
+            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY2.LineColor = System.Drawing.Color.White;
+            chartArea1.BackColor = System.Drawing.Color.DimGray;
+            chartArea1.BorderWidth = 2;
+            chartArea1.Name = "CloudCover";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(1, 39);
             this.chart1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "CloudCover";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Name = "Cloud";
-            this.chart1.Series.Add(series3);
+            series1.ChartArea = "CloudCover";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Cloud";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(369, 289);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1391,30 +1415,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = resources.GetString("label1.Text");
             // 
-            // cloudtext
-            // 
-            this.cloudtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cloudtext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cloudtext.Location = new System.Drawing.Point(260, 203);
-            this.cloudtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.cloudtext.Name = "cloudtext";
-            this.cloudtext.ReadOnly = true;
-            this.cloudtext.Size = new System.Drawing.Size(99, 20);
-            this.cloudtext.TabIndex = 26;
-            this.cloudtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(221, 206);
-            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 13);
-            this.label3.TabIndex = 27;
-            this.label3.Text = "Cloud";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // Obsyform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1429,7 +1429,7 @@
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "Obsyform";
-            this.Text = "Observatory Control Panel v10.6";
+            this.Text = "Observatory Control Panel v11";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.settupgroup.ResumeLayout(false);
             this.connectgroup.ResumeLayout(false);
@@ -1521,13 +1521,13 @@
         private System.Windows.Forms.Label LogLabel;
         private System.Windows.Forms.Button btnTrackTog;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button btnRelay4;
-        private System.Windows.Forms.Button btnRelay3;
-        private System.Windows.Forms.Button btnRelay2;
-        private System.Windows.Forms.Button btnRelay1;
+        private System.Windows.Forms.Button btnSwitch4;
+        private System.Windows.Forms.Button btnSwitch3;
+        private System.Windows.Forms.Button btnSwitch2;
+        private System.Windows.Forms.Button btnSwitch1;
         private System.Windows.Forms.Button btnRelaySel;
-        private System.Windows.Forms.Button btnConnRelay;
-        private System.Windows.Forms.Button btnDiscRelay;
+        private System.Windows.Forms.Button btnConnSwitch;
+        private System.Windows.Forms.Button btnDiscSwitch;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button button2;
@@ -1540,7 +1540,7 @@
         private System.Windows.Forms.Button btnEnBeep;
         private System.Windows.Forms.TextBox sqmtext;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox cloudtext;
+        private System.Windows.Forms.TextBox skytext;
         private System.Windows.Forms.Label label3;
     }
 }
