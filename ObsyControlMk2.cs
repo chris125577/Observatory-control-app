@@ -1628,7 +1628,7 @@ namespace Observatory
                 chart1.ChartAreas[0].AxisY.Minimum = 10;
                 chart1.ChartAreas[0].AxisY.Maximum = 20;
             }
-            if ((string)btngraphsel.SelectedItem == "sky temp C")
+            if ((string)btngraphsel.SelectedItem == "skyT C")
             {
                 charttype = 4;
                 chart1.ChartAreas[0].AxisY.Minimum = -20;
