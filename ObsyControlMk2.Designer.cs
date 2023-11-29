@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Obsyform));
             this.settupgroup = new System.Windows.Forms.GroupBox();
             this.btnRelaySel = new System.Windows.Forms.Button();
@@ -53,7 +53,7 @@
             this.status = new System.Windows.Forms.Timer(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.CtrlTabPage = new System.Windows.Forms.TabPage();
-            this.skytext = new System.Windows.Forms.TextBox();
+            this.cloudtext = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.sqmtext = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -438,7 +438,7 @@
             // CtrlTabPage
             // 
             this.CtrlTabPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.CtrlTabPage.Controls.Add(this.skytext);
+            this.CtrlTabPage.Controls.Add(this.cloudtext);
             this.CtrlTabPage.Controls.Add(this.label3);
             this.CtrlTabPage.Controls.Add(this.sqmtext);
             this.CtrlTabPage.Controls.Add(this.label2);
@@ -471,17 +471,17 @@
             this.CtrlTabPage.TabIndex = 0;
             this.CtrlTabPage.Text = "Control and Status";
             // 
-            // skytext
+            // cloudtext
             // 
-            this.skytext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.skytext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.skytext.Location = new System.Drawing.Point(260, 203);
-            this.skytext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.skytext.Name = "skytext";
-            this.skytext.ReadOnly = true;
-            this.skytext.Size = new System.Drawing.Size(99, 20);
-            this.skytext.TabIndex = 26;
-            this.skytext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cloudtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cloudtext.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cloudtext.Location = new System.Drawing.Point(260, 203);
+            this.cloudtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.cloudtext.Name = "cloudtext";
+            this.cloudtext.ReadOnly = true;
+            this.cloudtext.Size = new System.Drawing.Size(99, 20);
+            this.cloudtext.TabIndex = 26;
+            this.cloudtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
@@ -490,9 +490,9 @@
             this.label3.Location = new System.Drawing.Point(221, 206);
             this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 27;
-            this.label3.Text = "Sky T";
+            this.label3.Text = "Cloud";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // sqmtext
@@ -1148,7 +1148,7 @@
             "humidity %",
             "dewpoint C",
             "sky quality SQM",
-            "skyT C"});
+            "cloud"});
             this.btngraphsel.Location = new System.Drawing.Point(88, 5);
             this.btngraphsel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.btngraphsel.Name = "btngraphsel";
@@ -1172,29 +1172,29 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.Gray;
             this.chart1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisX.LineWidth = 2;
-            chartArea1.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX2.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LineWidth = 2;
-            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY2.LineColor = System.Drawing.Color.White;
-            chartArea1.BackColor = System.Drawing.Color.DimGray;
-            chartArea1.BorderWidth = 2;
-            chartArea1.Name = "CloudCover";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisX.LineWidth = 2;
+            chartArea2.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX2.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LineWidth = 2;
+            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY2.LineColor = System.Drawing.Color.White;
+            chartArea2.BackColor = System.Drawing.Color.DimGray;
+            chartArea2.BorderWidth = 2;
+            chartArea2.Name = "CloudCover";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Location = new System.Drawing.Point(1, 39);
             this.chart1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "CloudCover";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Name = "Cloud";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "CloudCover";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "Cloud";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(369, 289);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1429,7 +1429,7 @@
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "Obsyform";
-            this.Text = "Observatory Control Panel v11";
+            this.Text = "Observatory Control Panel v11.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.settupgroup.ResumeLayout(false);
             this.connectgroup.ResumeLayout(false);
@@ -1540,7 +1540,7 @@
         private System.Windows.Forms.Button btnEnBeep;
         private System.Windows.Forms.TextBox sqmtext;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox skytext;
+        private System.Windows.Forms.TextBox cloudtext;
         private System.Windows.Forms.Label label3;
     }
 }

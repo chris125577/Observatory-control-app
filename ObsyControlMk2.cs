@@ -35,6 +35,7 @@ using System.Windows.Forms;
 // 10.5 - delayed AAG graph output for 1 minute to prevent exception, conditional 4-way switch control
 // 10.6 - added cloud cover (sky temperature)
 // 11.0 - overhaul, including better comments
+// 11.1 - changed sky temperature to cloud cover
 
 namespace Observatory
 {
@@ -66,13 +67,16 @@ namespace Observatory
         private double[] dewvalues = new double[120];
         private double[] SQMvalues = new double[120];
         private double[] rainvalues = new double[120];
-        private double[] skyTvalues = new double[120];
+        private double[] cloudvalues = new double[120];
         private int samplecount = 0;  // sampling value increments every 2 seconds
         private int charttype = 0;  //selection variable
         // changes the true and false around on the following two lines to change the toggle logic sense
         private const bool switchon = true;
         private const bool switchoff = false;
-        //private short relayinterval = 0; // used for original Pegasus toggle box that needed slow polled switch reads
+        private double SkyUL = 10; // 100% cloud cover (initial value)
+        private double SkyLL = -10; // 0% cloud cover (iniitial value)
+        private const double skyTmax = 25;
+        private const double skyTmin = -25;//private short relayinterval = 0; // used for original Pegasus toggle box that needed slow polled switch reads
 
         public Obsyform()
         {
@@ -86,7 +90,7 @@ namespace Observatory
             pressuretext.Text = "not connected";
             sqmtext.Text = "not connected";
             imagingtext.Text = "not connected";
-            skytext.Text = "not connected";
+            cloudtext.Text = "not connected";
             statusbox.Text = "";
             // initialise connection box colors
             btnConnDome.ForeColor = Color.White;
@@ -353,14 +357,14 @@ namespace Observatory
                     pressuretext.Text = "connected";
                     temptext.Text = "connected";
                     sqmtext.Text = "connected";
-                    skytext.Text = "connected";
+                    cloudtext.Text = "connected";
                     btnConnWeather.ForeColor = Color.Gray;
                     btnDiscWeather.ForeColor = Color.White;
                     humidtext.BackColor = Color.LightGreen;
                     pressuretext.BackColor = Color.LightGreen;
                     sqmtext.BackColor = Color.LightGreen;
                     temptext.BackColor = Color.LightGreen;
-                    skytext.BackColor = Color.LightGreen;
+                    cloudtext.BackColor = Color.LightGreen;
                     // default chart is temp C
                     charttype = 0;
                     chart1.ChartAreas[0].AxisY.Minimum = -5;
@@ -376,14 +380,14 @@ namespace Observatory
                     pressuretext.Text = "not connected";
                     sqmtext.Text = "not connected";
                     temptext.Text = "not connected";
-                    skytext.Text = "not connected";
+                    cloudtext.Text = "not connected";
                     btnConnWeather.ForeColor = Color.White;
                     btnDiscWeather.ForeColor = Color.Gray;
                     humidtext.BackColor = Color.Silver;
                     pressuretext.BackColor = Color.Silver;
                     sqmtext.BackColor = Color.Silver;
                     temptext.BackColor = Color.Silver;
-                    skytext.BackColor = Color.Silver;
+                    cloudtext.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
@@ -405,6 +409,8 @@ namespace Observatory
                         Type foo = Type.GetTypeFromProgID("AAG_CloudWatcher.CloudWatcher");
                         dynamic oCW;
                         oCW = Activator.CreateInstance(foo);
+                        //oCW.WindowLeft = 0;
+                        //oCW.WindowTop = 0;
                         oCW.Device_Start();
                         oCW.RecordStart(true);
                         oCW = null;                       
@@ -522,14 +528,14 @@ namespace Observatory
                     pressuretext.Text = "not connected";
                     temptext.Text = "not connected";
                     sqmtext.Text = "not connected";
-                    skytext.Text = "not connected";
+                    cloudtext.Text = "not connected";
                     btnConnWeather.ForeColor = Color.White;
                     btnDiscWeather.ForeColor = Color.Gray;
                     humidtext.BackColor = Color.Silver;
                     pressuretext.BackColor = Color.Silver;
                     temptext.BackColor = Color.Silver;
                     sqmtext.BackColor = Color.Silver;
-                    skytext.BackColor = Color.Silver;
+                    cloudtext.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
@@ -639,7 +645,7 @@ namespace Observatory
                 pressuretext.BackColor = Color.Silver;
                 temptext.BackColor = Color.Silver;
                 sqmtext.BackColor = Color.Silver; 
-                skytext.BackColor = Color.Silver;
+                cloudtext.BackColor = Color.Silver;
                 statusbox.Clear();
                 result = MessageBox.Show("And relays?", "Disconnecting", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes) this.disconnectrelay(sender, e);
@@ -1579,7 +1585,7 @@ namespace Observatory
                     temptext.Text = Math.Round(weather.Temperature, 2).ToString() + " °C";
                     humidtext.Text = Math.Round(weather.Humidity, 2).ToString() + " %";
                     sqmtext.Text = Math.Round(weather.SkyQuality, 1).ToString() + " M/asec2";
-                    skytext.Text = Math.Round(weather.SkyTemperature, 1).ToString() + " C";
+                    cloudtext.Text = Math.Round(cloud(weather.SkyTemperature), 1).ToString() + " %";
                     if (weather.Humidity > maxhumidity)
                     {
                         humidtext.BackColor = Color.DarkOrange;
@@ -1600,7 +1606,27 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "weather error");
             }
         }
+        //  cloud takes sky temperature and scales to % cloud cover - auto adjusts limits
+        private double cloud(double adjtemp)
+        {
+            // automatic trim of limits SkyUL and SkyLL to sky temp extremes - but less than error state limits
+            if (adjtemp < skyTmin)
+            {
+                SkyLL = skyTmin;// very clear, less than limit
+                adjtemp = skyTmin;
+            }
+            if (adjtemp > skyTmax)
+            {
+                SkyUL = skyTmax; // very cloudy
+                adjtemp = skyTmax;
+            }
+            // otherwise modifiy SkyLL and SkyUL between outer limts
+            if (adjtemp < SkyLL && adjtemp > skyTmin) SkyLL = adjtemp;// very clear, less than limit
+            if (adjtemp > SkyUL && adjtemp < skyTmax) SkyUL = adjtemp; // very cloudy
 
+            // cloud cover calculation - ratio of sky temp between limits
+            return(100 * (adjtemp - SkyLL) / (SkyUL - SkyLL));
+        }
         // routine to change over the graph data source and y axis and update
         private void graphselect(object sender, EventArgs e)
         {
@@ -1628,11 +1654,11 @@ namespace Observatory
                 chart1.ChartAreas[0].AxisY.Minimum = 10;
                 chart1.ChartAreas[0].AxisY.Maximum = 20;
             }
-            if ((string)btngraphsel.SelectedItem == "skyT C")
+            if ((string)btngraphsel.SelectedItem == "cloud")
             {
                 charttype = 4;
-                chart1.ChartAreas[0].AxisY.Minimum = -20;
-                chart1.ChartAreas[0].AxisY.Maximum = 20;
+                chart1.ChartAreas[0].AxisY.Minimum = 0;
+                chart1.ChartAreas[0].AxisY.Maximum = 100;
             }
             // update chart values
             ChartDataUpdate(); // update latest values and transpose
@@ -1660,7 +1686,7 @@ namespace Observatory
                     humidvalues[index] = Math.Round(weather.Humidity, 2);
                     dewvalues[index] = Math.Round(weather.DewPoint, 2);
                     SQMvalues[index] = Math.Round(weather.SkyQuality, 2);
-                    skyTvalues[index] = Math.Round(weather.SkyTemperature, 1);
+                    cloudvalues[index] = Math.Round(cloud(weather.SkyTemperature), 1);
                 }
                 if ((samplecount >= 7200) && (samplecount % 60 == 0))
                 {
@@ -1670,14 +1696,14 @@ namespace Observatory
                         humidvalues[i] = humidvalues[i + 1];
                         dewvalues[i] = dewvalues[i + 1];
                         SQMvalues[i] = SQMvalues[i + 1];
-                        skyTvalues[i] = skyTvalues[i + 1];
+                        cloudvalues[i] = cloudvalues[i + 1];
                     }
                     // rhs value is current value
                     tempvalues[119] = Math.Round(weather.Temperature, 2);
                     humidvalues[119] = Math.Round(weather.Humidity, 2);
                     dewvalues[119] = Math.Round(weather.DewPoint, 2);
                     SQMvalues[119] = Math.Round(weather.SkyQuality, 2);
-                    skyTvalues[119] = Math.Round(weather.SkyTemperature, 1);
+                    cloudvalues[119] = Math.Round(cloud(weather.SkyTemperature), 1);
                 }
             }
             
@@ -1696,7 +1722,7 @@ namespace Observatory
                     for (int i = 0; i < 120; i++) chartvalues[i] = SQMvalues[i];
                     break;
                 default:
-                    for (int i = 0; i < 120; i++) chartvalues[i] = skyTvalues[i];
+                    for (int i = 0; i < 120; i++) chartvalues[i] = cloudvalues[i];
                     break;
             }
         }
