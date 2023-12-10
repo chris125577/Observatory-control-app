@@ -36,6 +36,7 @@ using System.Windows.Forms;
 // 10.6 - added cloud cover (sky temperature)
 // 11.0 - overhaul, including better comments
 // 11.1 - changed sky temperature to cloud cover
+// 11.2 - changed 1s form timer to 2s and 0.5s for non- and critical conditions
 
 namespace Observatory
 {
@@ -142,19 +143,18 @@ namespace Observatory
                 //set up chart
                 // need to move y-axis setting dependendent on series
                 chart1.Series.Clear(); //remove default series
-                chart1.Series.Add("Cloud"); //add series called Cloud
-                chart1.Series.FindByName("Cloud").ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line; //Change chart type to line
-                chart1.Series.FindByName("Cloud").Color = Color.White; //Change series color to red
-                chart1.Series["Cloud"].BorderWidth = 2;
+                chart1.Series.Add("CloudW"); //add series called CloudW
+                chart1.Series.FindByName("CloudW").ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line; //Change chart type to line
+                chart1.Series.FindByName("CloudW").Color = Color.White; //Change series color to red
+                chart1.Series["CloudW"].BorderWidth = 2;
                 chart1.ChartAreas[0].AxisX.Minimum = 0;
                 chart1.ChartAreas[0].AxisX.Maximum = 120; //(2 hours) - y-axis determined by source
             }
         }
 
-        /*  Each of the setxxx methods call up the ASCOM chooser and
-        updates the configuration / ASCOM profile file.
-        */
-        // dome device (roll off roof)
+        //  Each of the setxxx methods call up the ASCOM chooser and
+        //  updates the configuration / ASCOM profile file.
+        //  dome device (roll off roof)
         private void setroof(object sender, EventArgs e)
         {
             try
@@ -336,11 +336,12 @@ namespace Observatory
                 System.Windows.Forms.MessageBox.Show("Relay did not connect");
             }
         }
-        /* weather devices are complicated by the fact that weather and safety devices
-         * are inextricably linked. Here, the AAG cloudwatcher is checked for as a safety device but also
-         * there are useful ASCOM utilities that create a safe/unsafe condition from multiple weather
-         * sources
-         */
+
+        //  weather devices are complicated by the fact that weather and safety devices
+        //  are inextricably linked. Here, the AAG cloudwatcher is checked for as a safety device but also
+        //  there are useful ASCOM utilities that create a safe/unsafe condition from multiple weather
+        //  sources
+         
         private void connectweather(object sender, EventArgs e)
         {
             try
@@ -459,7 +460,7 @@ namespace Observatory
             }
 
         }
-        // functions to do the device disconnections (called by several methods)
+        // functions to do the device disconnections (called by several button presses)
         private void disctelescope()
         {
             try
@@ -790,7 +791,6 @@ namespace Observatory
             }
         }
 
-
         // simple command to stop tracking - does not need to know roof position
         private void toggletrack(object sender, EventArgs e)
         {
@@ -971,7 +971,6 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "mount off error");                
             }
         }
-
 
         // initiates Arduino controller - resetting rain sensor
         private void resetdome(object sender, EventArgs e)
@@ -1183,7 +1182,6 @@ namespace Observatory
             }
         }
 
-
         private void enablebeep(object sender, EventArgs e)
         {
             try
@@ -1221,8 +1219,6 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "park enable error");
             }
         }
-
-
 
         // toggles que open trigger flag if roof is connected for auto open when safe
         private void queautoroofopen(object sender, EventArgs e)
@@ -1360,9 +1356,9 @@ namespace Observatory
             }
         }
 
-        /*  checks if mount is parked and everything otherwise is good and finds home - uses sensor for mount position rather than parked status 
-        due to unkonwn mount condition at power up, even if in park position,
-        double checks that mount is not moving while the roof is closed and stops it dead */
+        //  checks if mount is parked and everything otherwise is good and finds home - uses sensor for mount position rather than parked status 
+        //  due to unkonwn mount condition at power up, even if in park position,
+        //  double checks that mount is not moving while the roof is closed and stops it dead if it is 
         private void automount()
         {
             try
@@ -1443,15 +1439,29 @@ namespace Observatory
         {
             try
             {
-                refreshshutterstate();
-                refreshmount();
+                // refreshshutterstate();
+                // refreshmount();
                 refreshswitch(); 
                 refreshweather();
                 refreshsafetymonitor();
-                goodConditions = noRain && clearAir && clearSky;  // amalgamation of air, sky and weather
-                            
+                goodConditions = noRain && clearAir && clearSky;  // amalgamation of air, sky and weather                          
                 automount(); // checks mount logic
                 autoroof();  // checks roof logic
+            }
+            catch (Exception)
+            {
+                statusbox.AppendText(Environment.NewLine + "data refresh error");
+            }
+        }
+
+        //  test of two form timers, this faster one just checks for collisions
+        private void collision(object sender, EventArgs e)
+        {
+            try
+            {
+                refreshshutterstate();
+                refreshmount();
+                automount(); // checks mount logic
             }
             catch (Exception)
             {
@@ -1654,7 +1664,7 @@ namespace Observatory
                 chart1.ChartAreas[0].AxisY.Minimum = 10;
                 chart1.ChartAreas[0].AxisY.Maximum = 20;
             }
-            if ((string)btngraphsel.SelectedItem == "cloud")
+            if ((string)btngraphsel.SelectedItem == "cloud %")
             {
                 charttype = 4;
                 chart1.ChartAreas[0].AxisY.Minimum = 0;

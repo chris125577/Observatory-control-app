@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Obsyform));
             this.settupgroup = new System.Windows.Forms.GroupBox();
             this.btnRelaySel = new System.Windows.Forms.Button();
@@ -50,7 +50,7 @@
             this.btnDiscWeather = new System.Windows.Forms.Button();
             this.btnDiscMount = new System.Windows.Forms.Button();
             this.btnDiscDome = new System.Windows.Forms.Button();
-            this.status = new System.Windows.Forms.Timer(this.components);
+            this.general_status = new System.Windows.Forms.Timer(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.CtrlTabPage = new System.Windows.Forms.TabPage();
             this.cloudtext = new System.Windows.Forms.TextBox();
@@ -117,6 +117,7 @@
             this.btnForcePark = new System.Windows.Forms.Button();
             this.btnForceHome = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.trigger = new System.Windows.Forms.Timer(this.components);
             this.settupgroup.SuspendLayout();
             this.connectgroup.SuspendLayout();
             this.disconnectgroup.SuspendLayout();
@@ -415,11 +416,11 @@
             this.btnDiscDome.UseVisualStyleBackColor = false;
             this.btnDiscDome.Click += new System.EventHandler(this.disconnectroof);
             // 
-            // status
+            // general_status
             // 
-            this.status.Enabled = true;
-            this.status.Interval = 1000;
-            this.status.Tick += new System.EventHandler(this.refreshall);
+            this.general_status.Enabled = true;
+            this.general_status.Interval = 2000;
+            this.general_status.Tick += new System.EventHandler(this.refreshall);
             // 
             // tabs
             // 
@@ -523,7 +524,7 @@
             // 
             this.LogLabel.AutoSize = true;
             this.LogLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.LogLabel.Location = new System.Drawing.Point(178, 263);
+            this.LogLabel.Location = new System.Drawing.Point(178, 259);
             this.LogLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.LogLabel.Name = "LogLabel";
             this.LogLabel.Size = new System.Drawing.Size(25, 13);
@@ -1148,7 +1149,7 @@
             "humidity %",
             "dewpoint C",
             "sky quality SQM",
-            "cloud"});
+            "cloud %"});
             this.btngraphsel.Location = new System.Drawing.Point(88, 5);
             this.btngraphsel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.btngraphsel.Name = "btngraphsel";
@@ -1172,29 +1173,29 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.Gray;
             this.chart1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisX.LineWidth = 2;
-            chartArea2.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea2.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisX2.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisY.LineWidth = 2;
-            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea2.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisY2.LineColor = System.Drawing.Color.White;
-            chartArea2.BackColor = System.Drawing.Color.DimGray;
-            chartArea2.BorderWidth = 2;
-            chartArea2.Name = "CloudCover";
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea3.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea3.AxisX.LineWidth = 2;
+            chartArea3.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea3.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea3.AxisX2.LineColor = System.Drawing.Color.White;
+            chartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea3.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea3.AxisY.LineWidth = 2;
+            chartArea3.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea3.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea3.AxisY2.LineColor = System.Drawing.Color.White;
+            chartArea3.BackColor = System.Drawing.Color.DimGray;
+            chartArea3.BorderWidth = 2;
+            chartArea3.Name = "CloudCover";
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Location = new System.Drawing.Point(1, 39);
             this.chart1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "CloudCover";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Name = "Cloud";
-            this.chart1.Series.Add(series2);
+            series3.ChartArea = "CloudCover";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Name = "Cloud";
+            this.chart1.Series.Add(series3);
             this.chart1.Size = new System.Drawing.Size(369, 289);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1415,6 +1416,11 @@
             this.label1.TabIndex = 2;
             this.label1.Text = resources.GetString("label1.Text");
             // 
+            // trigger
+            // 
+            this.trigger.Interval = 500;
+            this.trigger.Tick += new System.EventHandler(this.collision);
+            // 
             // Obsyform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1429,7 +1435,7 @@
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "Obsyform";
-            this.Text = "Observatory Control Panel v11.1";
+            this.Text = "Observatory Control Panel v11.2";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.settupgroup.ResumeLayout(false);
             this.connectgroup.ResumeLayout(false);
@@ -1466,7 +1472,7 @@
         private System.Windows.Forms.GroupBox disconnectgroup;
         private System.Windows.Forms.Button btnDiscMount;
         private System.Windows.Forms.Button btnDiscDome;
-        private System.Windows.Forms.Timer status;
+        private System.Windows.Forms.Timer general_status;
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.TabPage CtrlTabPage;
         private System.Windows.Forms.TabPage setuptab;
@@ -1542,6 +1548,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox cloudtext;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Timer trigger;
     }
 }
 
