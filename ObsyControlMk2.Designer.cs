@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Obsyform));
             this.settupgroup = new System.Windows.Forms.GroupBox();
             this.btnRelaySel = new System.Windows.Forms.Button();
@@ -117,7 +117,6 @@
             this.btnForcePark = new System.Windows.Forms.Button();
             this.btnForceHome = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.trigger = new System.Windows.Forms.Timer(this.components);
             this.settupgroup.SuspendLayout();
             this.connectgroup.SuspendLayout();
             this.disconnectgroup.SuspendLayout();
@@ -419,7 +418,7 @@
             // general_status
             // 
             this.general_status.Enabled = true;
-            this.general_status.Interval = 2000;
+            this.general_status.Interval = 500;
             this.general_status.Tick += new System.EventHandler(this.refreshall);
             // 
             // tabs
@@ -1173,29 +1172,29 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.Gray;
             this.chart1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisX.LineWidth = 2;
-            chartArea3.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisX2.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea3.AxisY.LineWidth = 2;
-            chartArea3.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea3.AxisY2.LineColor = System.Drawing.Color.White;
-            chartArea3.BackColor = System.Drawing.Color.DimGray;
-            chartArea3.BorderWidth = 2;
-            chartArea3.Name = "CloudCover";
-            this.chart1.ChartAreas.Add(chartArea3);
+            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisX.LineWidth = 2;
+            chartArea1.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisX2.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LineWidth = 2;
+            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea1.AxisY2.LineColor = System.Drawing.Color.White;
+            chartArea1.BackColor = System.Drawing.Color.DimGray;
+            chartArea1.BorderWidth = 2;
+            chartArea1.Name = "CloudCover";
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Location = new System.Drawing.Point(1, 39);
             this.chart1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "CloudCover";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Name = "Cloud";
-            this.chart1.Series.Add(series3);
+            series1.ChartArea = "CloudCover";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Cloud";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(369, 289);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1416,11 +1415,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = resources.GetString("label1.Text");
             // 
-            // trigger
-            // 
-            this.trigger.Interval = 500;
-            this.trigger.Tick += new System.EventHandler(this.collision);
-            // 
             // Obsyform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1548,7 +1542,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox cloudtext;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Timer trigger;
     }
 }
 

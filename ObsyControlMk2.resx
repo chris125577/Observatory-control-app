@@ -126,9 +126,6 @@ The Force commands ignore safety sensors for roof and mount.
 The sensor commands allow one to disable a sensor as 'safe'. 
 Both sets require independent verification of safe operation.</value>
   </data>
-  <metadata name="trigger.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>146, 17</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>168</value>
   </metadata>
