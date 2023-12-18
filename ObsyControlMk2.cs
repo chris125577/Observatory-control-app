@@ -30,12 +30,12 @@ using System.Windows.Forms;
 // 9.0 - improved clarity of toggle power control (when Unity server is fixed, poll will return to 1000ms)
 // 9.2 - after Unity server update, put back quick toggle status refresh
 // 10.0 - added beeper enable and disable - use with ARDUINO driver 3.0 and ASCOM driver  3.0
-// 10.1 - added safety shutdown 
+// 10.1 - added safety Shutdown 
 // 10.2 - modified to use a range of safety monitors but still fires up AAG CoudWatcher if it detect file output
 // 10.5 - delayed AAG graph output for 1 minute to prevent exception, conditional 4-way switch control
-// 10.6 - added cloud cover (sky temperature)
+// 10.6 - added CloudCalculator cover (sky temperature)
 // 11.0 - overhaul, including better comments
-// 11.1 - changed sky temperature to cloud cover
+// 11.1 - changed sky temperature to CloudCalculator cover
 // 11.2 - changed 1s form timer to 2s and 0.5s for non- and critical conditions
 
 namespace Observatory
@@ -50,10 +50,10 @@ namespace Observatory
         //        private AAG_CloudWatcher.CloudWatcher oCW;  // for remote control of AAG cloudwatcher
         private string domeId, mountId, weatherId, safetyId, switchID;  // holds ASCOM device IDs
         private bool busy;  // flag to stop conflicting commands to Arduino
-        private bool mountConnected, roofConnected, weatherconnected, safetyconnected, switchconnected;  // local variable to note current connected state
+        private bool mountConnected, roofConnected, weatherConnected, safetyConnected, switchconnected;  // local variable to note current connected state
         private string mountSafe, roofSafe;      // used for local storage
-        private bool priority = false;   // used to toggle priority actions in refreshall()
-        private ShutterState roofstatus;             // used to store shutter status
+        private bool priority = false;   // used to toggle priority actions in RefreshAll()
+        private ShutterState roofStatus;             // used to store shutter status
         String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ASCOM\\Obsy";
         String safetyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\AAG";
         private bool queOpen, queClose, noRain, goodConditions, clearAir, clearSky; // boolean flags for deciding if roof is on "auto" mode operation
@@ -75,8 +75,8 @@ namespace Observatory
         // changes the true and false around on the following two lines to change the toggle logic sense
         private const bool switchOn = true;
         private const bool switchOff = false;
-        private double SkyUL = 10; // 100% cloud cover (initial value)
-        private double SkyLL = -10; // 0% cloud cover (iniitial value)
+        private double SkyUL = 10; // 100% CloudCalculator cover (initial value)
+        private double SkyLL = -10; // 0% CloudCalculator cover (iniitial value)
         private const double skyTmax = 25;
         private const double skyTmin = -25;//private short relayinterval = 0; // used for original Pegasus toggle box that needed slow polled switch reads
 
@@ -86,13 +86,13 @@ namespace Observatory
             // initialise form status boxes
             drytext.Text = "not connected";
             rooftext.Text = "not connected";
-            mountext.Text = "not connected";
-            humidtext.Text = "not connected";
-            temptext.Text = "not connected";
-            pressuretext.Text = "not connected";
-            sqmtext.Text = "not connected";
-            imagingtext.Text = "not connected";
-            cloudtext.Text = "not connected";
+            mountText.Text = "not connected";
+            humidText.Text = "not connected";
+            tempText.Text = "not connected";
+            pressureText.Text = "not connected";
+            sqmText.Text = "not connected";
+            imagingText.Text = "not connected";
+            cloudText.Text = "not connected";
             statusbox.Text = "";
             // initialise connection box colors
             btnConnDome.ForeColor = Color.White;
@@ -110,8 +110,8 @@ namespace Observatory
             // ASCOM connection status
             roofConnected = false;
             mountConnected = false;
-            weatherconnected = false;
-            safetyconnected = false;
+            weatherConnected = false;
+            safetyConnected = false;
             switchconnected = false;
             for (int i = 0; i < 4; i++) power[i] = false;
             busy = false; // flag used to prevent multiple serial commands overlapping
@@ -132,9 +132,9 @@ namespace Observatory
             clearSky = false;
             goodConditions = false;
             aborted = false;
-            roofstatus = ShutterState.shutterError; // assume an error to start with
+            roofStatus = ShutterState.shutterError; // assume an error to start with
             // read in, if it exists, the connection settings file           
-            if (File.Exists(path + "\\obsy.txt")) fileread();
+            if (File.Exists(path + "\\obsy.txt")) ReadFile();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -156,12 +156,12 @@ namespace Observatory
         //  Each of the setxxx methods call up the ASCOM chooser and
         //  updates the configuration / ASCOM profile file.
         //  dome device (roll off roof)
-        private void setroof(object sender, EventArgs e)
+        private void SetRoof(object sender, EventArgs e)
         {
             try
             {
                 domeId = Dome.Choose(domeId);
-                this.filewrite();
+                this.WriteFile();
             }
             catch (Exception)
             {
@@ -170,12 +170,12 @@ namespace Observatory
 
         }
         // telescope (mount) device
-        private void setmount(object sender, EventArgs e)
+        private void SetMount(object sender, EventArgs e)
         {
             try
             {
                 mountId = Telescope.Choose(mountId);
-                this.filewrite();
+                this.WriteFile();
             }
             catch (Exception)
             {
@@ -184,12 +184,12 @@ namespace Observatory
         }
 
         // observing conditions device
-        private void setweather(object sender, EventArgs e)
+        private void SetWeather(object sender, EventArgs e)
         {
             try
             {
                 weatherId = ObservingConditions.Choose(weatherId);
-                this.filewrite();
+                this.WriteFile();
             }
             catch (Exception)
             {
@@ -197,12 +197,12 @@ namespace Observatory
             }
         }
         // safety monitor device ( either separate or using ASCOM device that in turn links to weather monitors
-        private void setsafety(object sender, EventArgs e)
+        private void SetSafety(object sender, EventArgs e)
         {
             try
             {
                 safetyId = SafetyMonitor.Choose(safetyId);
-                this.filewrite();
+                this.WriteFile();
             }
             catch (Exception)
             {
@@ -210,12 +210,12 @@ namespace Observatory
             }
         }
         // switch devices (binary)
-        private void setswitch(object sender, EventArgs e)
+        private void SetSwitch(object sender, EventArgs e)
         {
             try
             {
                 switchID = Switch.Choose(switchID);
-                this.filewrite();
+                this.WriteFile();
             }
             catch (Exception)
             {
@@ -225,7 +225,7 @@ namespace Observatory
 
         //  Each of the connectxxx methods create an object instance, connect to object
         //  and set up initial states for status boxes.
-        private void connectroof(object sender, EventArgs e)
+        private void ConnectDome(object sender, EventArgs e)
         {
             try
             {
@@ -240,7 +240,7 @@ namespace Observatory
                         drytext.Text = "connected";
                         btnConnDome.ForeColor = Color.Gray;
                         btnDiscDome.ForeColor = Color.White;
-                        sensorDisplay(); // update sensor backgrounds to indicate sensors
+                        DisplaySensor(); // update sensor backgrounds to indicate sensors
                     }
                     else System.Windows.Forms.MessageBox.Show("Dome did not connect");
                 }
@@ -260,7 +260,7 @@ namespace Observatory
                 System.Windows.Forms.MessageBox.Show("Dome did not connect");
             }
         }
-        private void connecttelescope(object sender, EventArgs e)
+        private void ConnectTelescope(object sender, EventArgs e)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace Observatory
                     mount = new Telescope(mountId);
                     mount.Connected = true;
                     mountConnected = true;
-                    mountext.Text = "connected";
+                    mountText.Text = "connected";
                     btnConnMount.ForeColor = Color.Gray;
                     btnDiscMount.ForeColor = Color.White;
                     if(!mount.CanFindHome || !mount.CanPark || !mount.CanPulseGuide)
@@ -278,7 +278,7 @@ namespace Observatory
                 else
                 {
                     mountConnected = false;
-                    mountext.Text = "not connected";
+                    mountText.Text = "not connected";
                     btnConnMount.ForeColor = Color.White;
                     btnDiscMount.ForeColor = Color.Gray;
                 }
@@ -286,11 +286,11 @@ namespace Observatory
             catch (Exception)  // added some changes to status, to prevent new connections
             {
                 mountConnected = false;
-                mountext.Text = "not connected!";
+                mountText.Text = "not connected!";
                 System.Windows.Forms.MessageBox.Show("Mount did not connect");
             }
         }
-        private void connectswitch(object sender, EventArgs e)
+        private void ConnectSwitch(object sender, EventArgs e)
         {
             try
             {
@@ -321,7 +321,7 @@ namespace Observatory
                         btnSwitch3.Text = toggle.GetSwitchDescription(5); // cam 2 usb
                         btnSwitch4.Text = toggle.GetSwitchDescription(6); // guider
                     }
-                        getswitchstate();  // all at once
+                        GetSwitchState();  // all at once
                 }
                 else
                 {
@@ -343,64 +343,64 @@ namespace Observatory
         //  there are useful ASCOM utilities that create a safe/unsafe condition from multiple weather
         //  sources
          
-        private void connectweather(object sender, EventArgs e)
+        private void ConnectWeather(object sender, EventArgs e)
         {
             try
             {
                 if (weatherId != null)
                 {
                     // as safety monitor also has environmental sensors;
-                    if (!safetyconnected) connectsafety(sender, e);
+                    if (!safetyConnected) ConnectSafety(sender, e);
                     // connect to weatherstick or other device
                     weather = new ObservingConditions(weatherId);
                     weather.Connected = true;
-                    weatherconnected = true;
-                    humidtext.Text = "connected";
-                    pressuretext.Text = "connected";
-                    temptext.Text = "connected";
-                    sqmtext.Text = "connected";
-                    cloudtext.Text = "connected";
+                    weatherConnected = true;
+                    humidText.Text = "connected";
+                    pressureText.Text = "connected";
+                    tempText.Text = "connected";
+                    sqmText.Text = "connected";
+                    cloudText.Text = "connected";
                     btnConnWeather.ForeColor = Color.Gray;
                     btnDiscWeather.ForeColor = Color.White;
-                    humidtext.BackColor = Color.LightGreen;
-                    pressuretext.BackColor = Color.LightGreen;
-                    sqmtext.BackColor = Color.LightGreen;
-                    temptext.BackColor = Color.LightGreen;
-                    cloudtext.BackColor = Color.LightGreen;
+                    humidText.BackColor = Color.LightGreen;
+                    pressureText.BackColor = Color.LightGreen;
+                    sqmText.BackColor = Color.LightGreen;
+                    tempText.BackColor = Color.LightGreen;
+                    cloudText.BackColor = Color.LightGreen;
                     // default chart is temp C
                     chartType = 0;
                     chart1.ChartAreas[0].AxisY.Minimum = -5;
                     chart1.ChartAreas[0].AxisY.Maximum = 25;
                     btngraphsel.Text = "Temp C";
-                    refreshweather();
+                    RefreshWeather();
 
                 }
                 else // weather device not set
                 {
-                    weatherconnected = false;
-                    humidtext.Text = "not connected";
-                    pressuretext.Text = "not connected";
-                    sqmtext.Text = "not connected";
-                    temptext.Text = "not connected";
-                    cloudtext.Text = "not connected";
+                    weatherConnected = false;
+                    humidText.Text = "not connected";
+                    pressureText.Text = "not connected";
+                    sqmText.Text = "not connected";
+                    tempText.Text = "not connected";
+                    cloudText.Text = "not connected";
                     btnConnWeather.ForeColor = Color.White;
                     btnDiscWeather.ForeColor = Color.Gray;
-                    humidtext.BackColor = Color.Silver;
-                    pressuretext.BackColor = Color.Silver;
-                    sqmtext.BackColor = Color.Silver;
-                    temptext.BackColor = Color.Silver;
-                    cloudtext.BackColor = Color.Silver;
+                    humidText.BackColor = Color.Silver;
+                    pressureText.BackColor = Color.Silver;
+                    sqmText.BackColor = Color.Silver;
+                    tempText.BackColor = Color.Silver;
+                    cloudText.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
             {
                 weather.Connected = false;
-                weatherconnected = false;
+                weatherConnected = false;
                 System.Windows.Forms.MessageBox.Show("AAG/WS did not connect");
             }
         }
         // special case if it detects AAG cloudwatcher log file
-        private void connectsafety(object sender, EventArgs e)
+        private void ConnectSafety(object sender, EventArgs e)
         {
             try
             {
@@ -418,16 +418,16 @@ namespace Observatory
                         oCW = null;                       
                         safe = new SafetyMonitor(safetyId);
                         safe.Connected = true;
-                        safetyconnected = true;
-                        imagingtext.Text = "connected";
+                        safetyConnected = true;
+                        imagingText.Text = "connected";
                         btnConnSafety.ForeColor = Color.Gray;
                         btnDiscSafety.ForeColor = Color.White;
                     }
                 }
                 else
                 {
-                    safetyconnected = false;
-                    imagingtext.Text = "not connected";
+                    safetyConnected = false;
+                    imagingText.Text = "not connected";
                     btnConnSafety.ForeColor = Color.White;
                     btnDiscSafety.ForeColor = Color.Gray;
                 }
@@ -435,7 +435,7 @@ namespace Observatory
             catch (Exception)
             {
                 safe.Connected = false;
-                safetyconnected = false;
+                safetyConnected = false;
                 System.Windows.Forms.MessageBox.Show("Safety Monitor did not connect");
             }
         }
@@ -443,26 +443,26 @@ namespace Observatory
         // catchall shortcut does connect to all equipment
         // starts with SWITCH device only, to allow toggle setup before further connections
         // if SWITCH device connected, it connects the remaining devices
-        public void connectall(object sender, EventArgs e)
+        public void ConnectAll(object sender, EventArgs e)
         {
             statusbox.Clear();
             if (!switchconnected)
             {
-                connectswitch(sender, e);
+                ConnectSwitch(sender, e);
                 System.Windows.Forms.MessageBox.Show("check equipment power");
             }
 
             else
             {
-                connectsafety(sender, e);
-                connectroof(sender, e);
-                connecttelescope(sender, e);
-                connectweather(sender, e);
+                ConnectSafety(sender, e);
+                ConnectDome(sender, e);
+                ConnectTelescope(sender, e);
+                ConnectWeather(sender, e);
             }
 
         }
         // functions to do the device disconnections (called by several button presses)
-        private void disctelescope()
+        private void DisconnectTelescope()
         {
             try
             {
@@ -470,10 +470,10 @@ namespace Observatory
                 {
                     mount.Connected = false;  // disconnect mount
                     mountConnected = false;
-                    mountext.Text = "not connected";
+                    mountText.Text = "not connected";
                     btnConnMount.ForeColor = Color.White;
                     btnDiscMount.ForeColor = Color.Gray;
-                    mountext.BackColor = Color.Silver;
+                    mountText.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
@@ -481,7 +481,7 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "disconnect mount error");
             }
         }
-        private void discroof()
+        private void DisconnectDome()
         {
             try
             {
@@ -501,7 +501,7 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "disconnect roof error");
             }
         }
-        private void discswitch()
+        private void DisconnectSwitch()
         {
             try
             {
@@ -518,26 +518,26 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "disconnect relay error");
             }
         }
-        private void discweather()
+        private void DisconnectWeather()
         {
             try
             {
-                if (weatherconnected)
+                if (weatherConnected)
                 {
                     weather.Connected = false;   //disconnect weather sensors
-                    weatherconnected = false;
-                    humidtext.Text = "not connected";
-                    pressuretext.Text = "not connected";
-                    temptext.Text = "not connected";
-                    sqmtext.Text = "not connected";
-                    cloudtext.Text = "not connected";
+                    weatherConnected = false;
+                    humidText.Text = "not connected";
+                    pressureText.Text = "not connected";
+                    tempText.Text = "not connected";
+                    sqmText.Text = "not connected";
+                    cloudText.Text = "not connected";
                     btnConnWeather.ForeColor = Color.White;
                     btnDiscWeather.ForeColor = Color.Gray;
-                    humidtext.BackColor = Color.Silver;
-                    pressuretext.BackColor = Color.Silver;
-                    temptext.BackColor = Color.Silver;
-                    sqmtext.BackColor = Color.Silver;
-                    cloudtext.BackColor = Color.Silver;
+                    humidText.BackColor = Color.Silver;
+                    pressureText.BackColor = Color.Silver;
+                    tempText.BackColor = Color.Silver;
+                    sqmText.BackColor = Color.Silver;
+                    cloudText.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
@@ -545,18 +545,18 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "disconnect weather error");
             }
         }
-        private void discsafe()
+        private void DisconnectSafety()
         {
             try
             {
-                if (safetyconnected)
+                if (safetyConnected)
                 {
                     safe.Connected = false;   //diconnect roof
-                    safetyconnected = false;
-                    imagingtext.Text = "not connected";
+                    safetyConnected = false;
+                    imagingText.Text = "not connected";
                     btnConnSafety.ForeColor = Color.White;
                     btnDiscSafety.ForeColor = Color.Gray;
-                    imagingtext.BackColor = Color.Silver;
+                    imagingText.BackColor = Color.Silver;
                 }
             }
             catch (Exception)
@@ -567,11 +567,11 @@ namespace Observatory
 
         //  Each of the disconnectxxx methods disconnects
         //  and changes state for status boxes.
-        private void disconnecttelescope(object sender, EventArgs e)
+        private void DisconnectMount(object sender, EventArgs e)
         {
             try
             {
-                this.disctelescope();
+                this.DisconnectTelescope();
             }
             catch (Exception)
             {
@@ -579,11 +579,11 @@ namespace Observatory
             }
         }
 
-        private void disconnectroof(object sender, EventArgs e)
+        private void DisconnectRoof(object sender, EventArgs e)
         {
             try
             {
-                this.discroof();
+                this.DisconnectDome();
             }
             catch (Exception)
             {
@@ -591,11 +591,11 @@ namespace Observatory
             }
         }
 
-        private void disconnectweather(object sender, EventArgs e)
+        private void DisconnectEnvironment(object sender, EventArgs e)
         {
             try
             {
-                this.discweather();
+                this.DisconnectWeather();
             }
             catch (Exception)
             {
@@ -603,11 +603,11 @@ namespace Observatory
             }
         }
 
-        private void disconnectsafety(object sender, EventArgs e)
+        private void DisconnectSafetyMonitor(object sender, EventArgs e)
         {
             try
             {
-                this.discsafe();
+                this.DisconnectSafety();
             }
             catch (Exception)
             {
@@ -615,11 +615,11 @@ namespace Observatory
             }
         }
 
-        private void disconnectrelay(object sender, EventArgs e)
+        private void DisconnectRelay(object sender, EventArgs e)
         {
             try
             {
-                this.discswitch();
+                this.DisconnectSwitch();
             }
             catch (Exception)
             {
@@ -628,49 +628,49 @@ namespace Observatory
         }
 
         // tries to disconnect all, after confirmation from user
-        private void disconnectall(object sender, EventArgs e)
+        private void DisconnectAll(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Do you want to continue?", "Disconnecting", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                if (queClose) this.queautoroofclose(sender, e);
-                if (queOpen) this.queautoroofopen(sender, e);
-                this.disconnectroof(sender, e);
-                this.disconnecttelescope(sender, e);
-                this.disconnectweather(sender, e);
-                this.disconnectsafety(sender, e);
-                mountext.BackColor = Color.Silver;
+                if (queClose) this.CueAutoRoofClose(sender, e);
+                if (queOpen) this.CueAutoRoofOpen(sender, e);
+                this.DisconnectRoof(sender, e);
+                this.DisconnectMount(sender, e);
+                this.DisconnectEnvironment(sender, e);
+                this.DisconnectSafetyMonitor(sender, e);
+                mountText.BackColor = Color.Silver;
                 rooftext.BackColor = Color.Silver;
                 drytext.BackColor = Color.Silver;
-                imagingtext.BackColor = Color.Silver;
-                humidtext.BackColor = Color.Silver;
-                pressuretext.BackColor = Color.Silver;
-                temptext.BackColor = Color.Silver;
-                sqmtext.BackColor = Color.Silver; 
-                cloudtext.BackColor = Color.Silver;
+                imagingText.BackColor = Color.Silver;
+                humidText.BackColor = Color.Silver;
+                pressureText.BackColor = Color.Silver;
+                tempText.BackColor = Color.Silver;
+                sqmText.BackColor = Color.Silver; 
+                cloudText.BackColor = Color.Silver;
                 statusbox.Clear();
                 result = MessageBox.Show("And relays?", "Disconnecting", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes) this.disconnectrelay(sender, e);
+                if (result == DialogResult.Yes) this.DisconnectRelay(sender, e);
             }
         }
 
         // parks or unparks mount
-        private void parktoggle(object sender, EventArgs e)
+        private void TogglePark(object sender, EventArgs e)
         {
-            if (mountSafe == "Parked") mountunpark();
-            else if (mountSafe != "Slewing") mountpark();  // added extra test to avoid trying to park while slewing
+            if (mountSafe == "Parked") UnparkMount();
+            else if (mountSafe != "Slewing") ParkMount();  // added extra test to avoid trying to park while slewing
         }
 
         // parks telescope mount, only if roof is open
-        private void mountpark()
+        private void ParkMount()
         {
             try
             {
-                if (mountConnected && roofstatus == ShutterState.shutterOpen)
+                if (mountConnected && roofStatus == ShutterState.shutterOpen)
                 {
                     if (!mount.AtPark)
                     {
-                        mountext.Text = "Parking";
+                        mountText.Text = "Parking";
                         if (mount.CanPark)
                         {
                             mount.Park();
@@ -686,7 +686,7 @@ namespace Observatory
                         else statusbox.AppendText(Environment.NewLine + "parking disabled");                        
                     }
                 }
-                else if (roofstatus == ShutterState.shutterClosed) System.Windows.Forms.MessageBox.Show("Roof is Closed!");
+                else if (roofStatus == ShutterState.shutterClosed) System.Windows.Forms.MessageBox.Show("Roof is Closed!");
             }
             catch (Exception)
             {
@@ -695,24 +695,24 @@ namespace Observatory
         }
 
         // unparks telescope mount, only if roof is open
-        private void mountunpark()
+        private void UnparkMount()
         {
             try
             {
-                if (mountConnected && roofstatus == ShutterState.shutterOpen)
+                if (mountConnected && roofStatus == ShutterState.shutterOpen)
                 {
                     if (mount.AtPark)
                     {
                         if (mount.CanUnpark)
                         {
                             mount.Unpark();
-                            mountext.Text = "Unparked";
+                            mountText.Text = "Unparked";
                         }
                         else statusbox.AppendText(Environment.NewLine + "mount cannot unpark");
                     }
                     else System.Windows.Forms.MessageBox.Show("mount not parked!");
                 }
-                else if (roofstatus == ShutterState.shutterClosed) System.Windows.Forms.MessageBox.Show("Roof is closed!");
+                else if (roofStatus == ShutterState.shutterClosed) System.Windows.Forms.MessageBox.Show("Roof is closed!");
             }
             catch (Exception)
             {
@@ -721,43 +721,43 @@ namespace Observatory
         }
 
         // open, home mount, park mount and close roof (only if safe to do so)
-        private void hibernate(object sender, EventArgs e)
+        private void Hibernate(object sender, EventArgs e)
         {
             int i;
             try
             {
-                if (queOpen) this.queautoroofopen(sender, e);  // disable autoque for hibernate command
-                if (queClose) this.queautoroofclose(sender, e);
+                if (queOpen) this.CueAutoRoofOpen(sender, e);  // disable autoque for Hibernate command
+                if (queClose) this.CueAutoRoofClose(sender, e);
                 btnHibernate.BackColor = Color.Yellow;
                 btnHibernate.ForeColor = Color.Black;
                 if (mountConnected && roofConnected && mount.CanPark)
                 {
-                    if (roofstatus == ShutterState.shutterClosed)
+                    if (roofStatus == ShutterState.shutterClosed)
                     {
                         if (mountSafe == "Parked" && !busy)
                         {
-                            mountext.Text = "hibernating";
-                            mountext.BackColor = Color.DarkOrange;
+                            mountText.Text = "hibernating";
+                            mountText.BackColor = Color.DarkOrange;
                             statusbox.AppendText(Environment.NewLine + "opening");
-                            this.roofopen(sender, e);
-                            this.refreshshutterstate();
+                            this.OpenRoof(sender, e);
+                            this.RefreshShutterState();
                         }
 
-                        for (i = 0; i < roofTimeout && roofstatus != ShutterState.shutterOpen; ++i)
+                        for (i = 0; i < roofTimeout && roofStatus != ShutterState.shutterOpen; ++i)
                         {
                             System.Threading.Thread.Sleep(2000);
                             Console.Beep(1000, 200);
-                            this.refreshshutterstate();
+                            this.RefreshShutterState();
                         }
                     }
-                    if (roofstatus == ShutterState.shutterOpen)
+                    if (roofStatus == ShutterState.shutterOpen)
                     {
-                        mountext.Text = "unparking";
+                        mountText.Text = "unparking";
                         if (mount.AtPark) mount.Unpark();
                         mount.Tracking = false;
-                        mountext.Text = "homing";
+                        mountText.Text = "homing";
                         if (!mount.AtHome) mount.FindHome();
-                        mountext.Text = "parking";
+                        mountText.Text = "parking";
                         if (mount.CanPark) mount.Park(); // ensure mount is parked before closing roof
                         for (i = 0; i < mountTimeout && !mount.AtPark; ++i)
                         {
@@ -766,7 +766,7 @@ namespace Observatory
                         }
                         System.Threading.Thread.Sleep(3000);
                         statusbox.AppendText(Environment.NewLine + "ready to close");
-                        this.refreshmount();
+                        this.RefreshMount();
                         if (mountSafe == "Parked" && !busy)  // sensor agreed position
                         {
                             busy = true;
@@ -775,7 +775,7 @@ namespace Observatory
                             statusbox.AppendText(Environment.NewLine + "closing roof");
                         }
                         else System.Windows.Forms.MessageBox.Show("Error - try manual close");
-                        mountext.BackColor = Color.LightGreen;
+                        mountText.BackColor = Color.LightGreen;
                         btnHibernate.BackColor = Color.Transparent;
                         btnHibernate.ForeColor = Color.White;
                     }
@@ -785,8 +785,8 @@ namespace Observatory
 
             catch (Exception)
             {
-                // disctelescope();
-                statusbox.AppendText(Environment.NewLine + "hibernate error");
+                // DisconnectMount();
+                statusbox.AppendText(Environment.NewLine + "Hibernate error");
                 btnHibernate.BackColor = Color.DarkOrange;
                 btnHibernate.ForeColor = Color.White;
             }
@@ -803,13 +803,13 @@ namespace Observatory
                     {
                         if (mount.CanSetTracking) mount.Tracking = false;
                         btnTrackTog.Text = "Tracking On";
-                        mountext.Text = "Tracking Off";
+                        mountText.Text = "Tracking Off";
                     }
                     else if (mountSafe != "Tracking")
                     {
                         if (mount.CanSetTracking) mount.Tracking = true;
                         btnTrackTog.Text = "Tracking Off";
-                        mountext.Text = "Tracking On";
+                        mountText.Text = "Tracking On";
                     }
                 }
                 else statusbox.AppendText(Environment.NewLine + "no tracking control");
@@ -825,25 +825,25 @@ namespace Observatory
         {
             try
             {
-                if (mountConnected && roofConnected && roofstatus == ShutterState.shutterOpen)
+                if (mountConnected && roofConnected && roofStatus == ShutterState.shutterOpen)
                 {
                     if (mount.CanUnpark)
                     {
-                        mountext.Text = "Unparking";
+                        mountText.Text = "Unparking";
                         if (mount.AtPark) mount.Unpark();
                     }
                     else statusbox.AppendText(Environment.NewLine + "mount cannot unpark");
 
                     if (mount.CanSetTracking) mount.Tracking = false;
-                    mountext.Text = " Tracking off";
+                    mountText.Text = " Tracking off";
                     if (mount.CanFindHome)
                     {
-                        mountext.Text = "homing";
+                        mountText.Text = "homing";
                         mount.FindHome();
                     }
                     else statusbox.AppendText(Environment.NewLine + "mount cannot home");
                 }
-                else if (roofstatus != ShutterState.shutterOpen) System.Windows.Forms.MessageBox.Show("No mount movements when roof not open!");
+                else if (roofStatus != ShutterState.shutterOpen) System.Windows.Forms.MessageBox.Show("No mount movements when roof not open!");
             }
             catch (Exception)
             {
@@ -860,15 +860,15 @@ namespace Observatory
                 {
                     if (mount.CanUnpark)
                     {
-                        mountext.Text = "Unparking";
+                        mountText.Text = "Unparking";
                         if (mount.AtPark) mount.Unpark();
                     }
                     if (mount.CanSetTracking) mount.Tracking = false;
-                    mountext.Text = " Tracking off";
+                    mountText.Text = " Tracking off";
                     if (mount.CanFindHome)
                     {
                         mount.FindHome();
-                        mountext.Text = "homing";
+                        mountText.Text = "homing";
                     }
                 }
             }
@@ -1031,7 +1031,7 @@ namespace Observatory
         }
 
         // general roof move, with safety considerations
-        private void roofopen(object sender, EventArgs e)
+        private void OpenRoof(object sender, EventArgs e)
         {
             try
             {
@@ -1066,7 +1066,7 @@ namespace Observatory
         }
 
         // update sensor enable flags
-        void sensorDisplay()
+        void DisplaySensor()
         {
             if (dome.CommandBool("PARKSENSOR", false))
             {
@@ -1102,7 +1102,7 @@ namespace Observatory
 
         // special command outside standard ASCOM to modify sensor usage in Arduino
         // check this type of command goes through the hub
-        private void norainsense(object sender, EventArgs e)
+        private void NoRainSensor(object sender, EventArgs e)
         {
             try
             {
@@ -1111,7 +1111,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("NORAINSENSE", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1123,7 +1123,7 @@ namespace Observatory
 
         // special command outside standard ASCOM to modify sensor usage in Arduino
         // when disabled, Arduino acts as if sensor always reads safe
-        private void rainsense(object sender, EventArgs e)
+        private void RainSensor(object sender, EventArgs e)
         {
             try
             {
@@ -1132,7 +1132,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("RAINSENSE", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1144,7 +1144,7 @@ namespace Observatory
 
         // special command outside standard ASCOM to modify sensor usage in Arduino
         // when disabled, Arduino acts as if sensor always reads safe
-        private void noparksense(object sender, EventArgs e)
+        private void NoParkSensor(object sender, EventArgs e)
         {
             try
             {
@@ -1153,7 +1153,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("NOPARKSENSE", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1164,7 +1164,7 @@ namespace Observatory
         }
 
         // special command outside standard ASCOM to modify sensor usage in Arduino
-        private void parksense(object sender, EventArgs e)
+        private void ParkSensor(object sender, EventArgs e)
         {
             try
             {
@@ -1173,7 +1173,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("PARKSENSE", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1183,7 +1183,7 @@ namespace Observatory
             }
         }
 
-        private void enablebeep(object sender, EventArgs e)
+        private void EnableBeep(object sender, EventArgs e)
         {
             try
             {
@@ -1192,7 +1192,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("BEEPON", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1202,7 +1202,7 @@ namespace Observatory
             }
         }
 
-        private void disablebeep(object sender, EventArgs e)
+        private void DisableBeep(object sender, EventArgs e)
         {
             try
             {
@@ -1211,7 +1211,7 @@ namespace Observatory
                     busy = true;
                     dome.CommandBlind("BEEPOFF", false);
                     System.Threading.Thread.Sleep(2000);
-                    sensorDisplay();
+                    DisplaySensor();
                     busy = false;
                 }
             }
@@ -1222,7 +1222,7 @@ namespace Observatory
         }
 
         // toggles que open trigger flag if roof is connected for auto open when safe
-        private void queautoroofopen(object sender, EventArgs e)
+        private void CueAutoRoofOpen(object sender, EventArgs e)
         {
             try
             {
@@ -1259,7 +1259,7 @@ namespace Observatory
         }
 
         // toggles que close trigger flag if roof is connected for when auto close when not safe
-        private void queautoroofclose(object sender, EventArgs e)
+        private void CueAutoRoofClose(object sender, EventArgs e)
         {
             try
             {
@@ -1295,10 +1295,10 @@ namespace Observatory
             }
         }
 
-        // If one or both of the autocues is active, autoroof works out whether to open or 
+        // If one or both of the autocues is active, AutoRoof works out whether to open or 
         // close the roof and park the mount depending on weather conditions.
         // It uses an amalgam of multiple sensors to determine the action.
-        private void autoroof()
+        private void AutoRoof()
         {
             // initial states, weathersafe is conglomerate of multiple rain, humidity and safety sensors
             int i;
@@ -1307,9 +1307,9 @@ namespace Observatory
                 if (mountConnected && roofConnected && !busy)  // only if mount and roof are connected
                 {
                     // check for auto close conditions
-                    if (roofstatus == ShutterState.shutterOpen && !goodConditions && queClose)
+                    if (roofStatus == ShutterState.shutterOpen && !goodConditions && queClose)
                     {
-                        mountext.Text = "Parking";
+                        mountText.Text = "Parking";
                         if (!mount.AtPark) mount.Park(); // ensure mount is parked before closing roof
                         for (i = 0; i < mountTimeout && !mount.AtPark; ++i)
                         {
@@ -1317,7 +1317,7 @@ namespace Observatory
                             Console.Beep(1000, 200);
                         }
                         System.Threading.Thread.Sleep(3000);
-                        this.refreshmount();
+                        this.RefreshMount();
                         if (mountSafe == "Parked" && !busy)  // sensor agreed position
                         {
                             busy = true;
@@ -1330,11 +1330,11 @@ namespace Observatory
                             statusbox.AppendText(Environment.NewLine + "auto close");
                         }
                         else System.Windows.Forms.MessageBox.Show("busy, try manual close");
-                        this.refreshshutterstate();
+                        this.RefreshShutterState();
                     }
 
                     // check for auto open conditions
-                    else if (roofstatus == ShutterState.shutterClosed && goodConditions && queOpen)
+                    else if (roofStatus == ShutterState.shutterClosed && goodConditions && queOpen)
                     {
                         if (mountSafe == "Parked" && !busy) // use sensor rather than mount status
                         {
@@ -1344,10 +1344,10 @@ namespace Observatory
                             statusbox.AppendText(Environment.NewLine + "auto open");
                         }
                         else System.Windows.Forms.MessageBox.Show("busy, try manual open");
-                        this.refreshshutterstate();
+                        this.RefreshShutterState();
                     }
                     // experiment to trap roof closing on unparked mount
-                    else if (roofstatus == ShutterState.shutterClosing && mountSafe != "Parked")
+                    else if (roofStatus == ShutterState.shutterClosing && mountSafe != "Parked")
                         dome.AbortSlew();
                 }
             }
@@ -1360,29 +1360,29 @@ namespace Observatory
         //  checks if mount is parked and everything otherwise is good and finds home - uses sensor for mount position rather than parked status 
         //  due to unkonwn mount condition at power up, even if in park position,
         //  double checks that mount is not moving while the roof is closed and stops it dead if it is 
-        private void automount()
+        private void AutoMount()
         {
             try
             {
                 if (mountConnected && roofConnected)  // only if mount and roof are connected
                 {
                     //auto open
-                    if (roofstatus == ShutterState.shutterOpen && mountSafe == "Parked" && goodConditions && queOpen)  // if it opened, move mount
+                    if (roofStatus == ShutterState.shutterOpen && mountSafe == "Parked" && goodConditions && queOpen)  // if it opened, move mount
                     {
-                        mountext.Text = "unparking";
+                        mountText.Text = "unparking";
                         if (mount.AtPark) mount.Unpark();
                         mount.Tracking = false;
-                        mountext.Text = "homing";
+                        mountText.Text = "homing";
                         mount.FindHome();
                         // disable que open
                         queOpen = false;
                         btnAutoOpen.BackColor = Color.DarkOrange;
                         btnAutoOpen.ForeColor = Color.White;
-                        refreshmount();  // update mount status
+                        RefreshMount();  // update mount status
                     }
 
                     // with new roof status, if mount is doing anything strange, need to stop it dead - either with roof closed or in error state
-                    if (roofstatus != ShutterState.shutterOpen)
+                    if (roofStatus != ShutterState.shutterOpen)
                     {
                         if (mountSafe != "Parked")
                         {
@@ -1390,7 +1390,7 @@ namespace Observatory
                             {
                                 mount.AbortSlew();
                                 aborted = true;
-                                mountext.Text = "aborting";
+                                mountText.Text = "aborting";
                                 statusbox.AppendText(Environment.NewLine + "aborting slew");
                             }
                             mount.Tracking = false; // stop tracking
@@ -1399,7 +1399,7 @@ namespace Observatory
                             statusbox.AppendText(Environment.NewLine + "make safe, home mount");
                             if (switchconnected)
                             {
-                                if (mountConnected) disctelescope();
+                                if (mountConnected) DisconnectTelescope();
                                 TurnOffMountSwitch(); // look for switch labelled 'Mount' or 'mount' and disconnect mount power
                                 aborted = true;
                                 statusbox.AppendText(Environment.NewLine + "mount power off");
@@ -1414,7 +1414,7 @@ namespace Observatory
                 // added further catch in case ASCOM mount is disconnected
                 else if (roofConnected)
                 {
-                    if (roofstatus != ShutterState.shutterOpen && mountSafe != "Parked") // in case mount is disconnected
+                    if (roofStatus != ShutterState.shutterOpen && mountSafe != "Parked") // in case mount is disconnected
                     {
                         if (switchconnected)
                         {
@@ -1436,19 +1436,19 @@ namespace Observatory
         // status refresh routines - for roof, weather, safety monitor and mount, called by form timer
         // creates overall good conditions status from various readings
         // checks on mount and roof actions every cycle weather stuff on every other
-        private void refreshall(object sender, EventArgs e)
+        private void RefreshAll(object sender, EventArgs e)
         {
             try
             {
-                refreshshutterstate();
-                refreshmount();
-                automount(); // checks mount logic
-                autoroof();  // checks roof logic
+                RefreshShutterState();
+                RefreshMount();
+                AutoMount(); // checks mount logic
+                AutoRoof();  // checks roof logic
                 if (!priority)
                 {
-                    refreshswitch();
-                    refreshweather();
-                    refreshsafetymonitor();
+                    RefreshSwitch();
+                    RefreshWeather();
+                    RefreshSafetyMonitor();
                     goodConditions = noRain && clearAir && clearSky;  // amalgamation of air, sky and weather                          
                 }
                 priority = !priority;                
@@ -1460,14 +1460,14 @@ namespace Observatory
         }
 
         // small routine to update switches, in case there is a parallel hub command - every 4 cycles
-        private void refreshswitch()
+        private void RefreshSwitch()
         {
             try  // all at once
             {
                 if (switchconnected)
                 {
-                    getswitchstate();
-                    showswitchstate();
+                    GetSwitchState();
+                    ShowSwitchState();
                 }
             }
             catch (Exception)
@@ -1477,22 +1477,22 @@ namespace Observatory
         }
 
         // uses safetymonitor to update status and display
-        private void refreshsafetymonitor()
+        private void RefreshSafetyMonitor()
         {
             try
             {
-                if (safetyconnected)
+                if (safetyConnected)
                 {
                     if (safe.IsSafe)
                     {
-                        imagingtext.BackColor = Color.LightGreen;
-                        imagingtext.Text = "OK to Open";
+                        imagingText.BackColor = Color.LightGreen;
+                        imagingText.Text = "OK to Open";
                         clearSky = true;  // update weatherstatus
                     }
                     else
                     {
-                        imagingtext.BackColor = Color.DarkOrange;
-                        imagingtext.Text = "NOK to Open";
+                        imagingText.BackColor = Color.DarkOrange;
+                        imagingText.Text = "NOK to Open";
                         clearSky = false;  // update weatherstatus
                     }
                 }
@@ -1505,7 +1505,7 @@ namespace Observatory
         }
 
         // checks shutter status from latest Arduino broadcast
-        private void refreshshutterstate()
+        private void RefreshShutterState()
         {
             try
             {
@@ -1513,9 +1513,9 @@ namespace Observatory
                 {
                     //  get shutter status
                     busy = true;
-                    roofstatus = dome.ShutterStatus;  // get shutter status   
+                    roofStatus = dome.ShutterStatus;  // get shutter status   
                     busy = false;
-                    switch (roofstatus)
+                    switch (roofStatus)
                     {
                         case ShutterState.shutterOpen:
                             rooftext.Text = "Open";
@@ -1546,7 +1546,7 @@ namespace Observatory
             }
             catch (Exception)
             {
-                statusbox.AppendText(Environment.NewLine + "roofstatus error");
+                statusbox.AppendText(Environment.NewLine + "roofStatus error");
             }
         }
 
@@ -1554,7 +1554,7 @@ namespace Observatory
          the rain is detected with a non-standard ASCOM command through its CommandBool method. If
          you are using a hub, you need to make sure that it passes all commands and not just the
          standard ones */
-        private void refreshweather()
+        private void RefreshWeather()
         {
             try
             {
@@ -1579,21 +1579,21 @@ namespace Observatory
                     }
                 }
                 else noRain = true;  // default if no rain detector
-                if (weatherconnected)
+                if (weatherConnected)
                 {
-                    pressuretext.Text = Math.Round(weather.Pressure, 2).ToString() + " hPa";
-                    temptext.Text = Math.Round(weather.Temperature, 2).ToString() + " °C";
-                    humidtext.Text = Math.Round(weather.Humidity, 2).ToString() + " %";
-                    sqmtext.Text = Math.Round(weather.SkyQuality, 1).ToString() + " M/asec2";
-                    cloudtext.Text = Math.Round(cloud(weather.SkyTemperature), 1).ToString() + " %";
+                    pressureText.Text = Math.Round(weather.Pressure, 2).ToString() + " hPa";
+                    tempText.Text = Math.Round(weather.Temperature, 2).ToString() + " °C";
+                    humidText.Text = Math.Round(weather.Humidity, 2).ToString() + " %";
+                    sqmText.Text = Math.Round(weather.SkyQuality, 1).ToString() + " M/asec2";
+                    cloudText.Text = Math.Round(CloudCalculator(weather.SkyTemperature), 1).ToString() + " %";
                     if (weather.Humidity > maxHumidity)
                     {
-                        humidtext.BackColor = Color.DarkOrange;
+                        humidText.BackColor = Color.DarkOrange;
                         clearAir = false;
                     }
                     else
                     {
-                        humidtext.BackColor = Color.LightGreen;
+                        humidText.BackColor = Color.LightGreen;
                         clearAir = true;
                     }
                     ChartDataUpdate();
@@ -1606,8 +1606,8 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "weather error");
             }
         }
-        //  cloud takes sky temperature and scales to % cloud cover - auto adjusts limits
-        private double cloud(double adjtemp)
+        //  CloudCalculator takes sky temperature and scales to % CloudCalculator cover - auto adjusts limits
+        private double CloudCalculator(double adjtemp)
         {
             // automatic trim of limits SkyUL and SkyLL to sky temp extremes - but less than error state limits
             if (adjtemp < skyTmin)
@@ -1624,7 +1624,7 @@ namespace Observatory
             if (adjtemp < SkyLL && adjtemp > skyTmin) SkyLL = adjtemp;// very clear, less than limit
             if (adjtemp > SkyUL && adjtemp < skyTmax) SkyUL = adjtemp; // very cloudy
 
-            // cloud cover calculation - ratio of sky temp between limits
+            // CloudCalculator cover calculation - ratio of sky temp between limits
             return(100 * (adjtemp - SkyLL) / (SkyUL - SkyLL));
         }
         // routine to change over the graph data source and y axis and update
@@ -1654,7 +1654,7 @@ namespace Observatory
                 chart1.ChartAreas[0].AxisY.Minimum = 10;
                 chart1.ChartAreas[0].AxisY.Maximum = 20;
             }
-            if ((string)btngraphsel.SelectedItem == "cloud %")
+            if ((string)btngraphsel.SelectedItem == "CloudCalculator %")
             {
                 chartType = 4;
                 chart1.ChartAreas[0].AxisY.Minimum = 0;
@@ -1686,7 +1686,7 @@ namespace Observatory
                     humidValues[index] = Math.Round(weather.Humidity, 2);
                     dewValues[index] = Math.Round(weather.DewPoint, 2);
                     SQMValues[index] = Math.Round(weather.SkyQuality, 2);
-                    cloudValues[index] = Math.Round(cloud(weather.SkyTemperature), 1);
+                    cloudValues[index] = Math.Round(CloudCalculator(weather.SkyTemperature), 1);
                 }
                 if ((sampleCount >= 7200) && (sampleCount % 60 == 0))
                 {
@@ -1703,26 +1703,31 @@ namespace Observatory
                     humidValues[119] = Math.Round(weather.Humidity, 2);
                     dewValues[119] = Math.Round(weather.DewPoint, 2);
                     SQMValues[119] = Math.Round(weather.SkyQuality, 2);
-                    cloudValues[119] = Math.Round(cloud(weather.SkyTemperature), 1);
+                    cloudValues[119] = Math.Round(CloudCalculator(weather.SkyTemperature), 1);
                 }
             }
             
             switch (chartType) // copy applicable data into chart array
             {
                 case 0:
-                    for (int i = 0; i < 120; i++) chartValues[i] = tempValues[i];
+                    chartValues = tempValues;
+                    //for (int i = 0; i < 120; i++) chartValues[i] = tempValues[i];
                     break;
                 case 1:
-                    for (int i = 0; i < 120; i++) chartValues[i] = humidValues[i];
+                    chartValues = humidValues;
+                    //for (int i = 0; i < 120; i++) chartValues[i] = humidValues[i];
                     break;
                 case 2:
-                    for (int i = 0; i < 120; i++) chartValues[i] = dewValues[i];
+                    chartValues = dewValues;
+                    //for (int i = 0; i < 120; i++) chartValues[i] = dewValues[i];
                     break;
                 case 3:
-                    for (int i = 0; i < 120; i++) chartValues[i] = SQMValues[i];
+                    chartValues = SQMValues;
+                    //for (int i = 0; i < 120; i++) chartValues[i] = SQMValues[i];
                     break;
                 default:
-                    for (int i = 0; i < 120; i++) chartValues[i] = cloudValues[i];
+                    chartValues = cloudValues;
+                    //for (int i = 0; i < 120; i++) chartValues[i] = cloudValues[i];
                     break;
             }
         }
@@ -1754,7 +1759,7 @@ namespace Observatory
         "Slewing"
         any movement (tracking, slewing, homing) from mount invalidates Park status
          */
-        private void refreshmount()
+        private void RefreshMount()
         {
             bool parkconfirm;  // park sensor status
             try
@@ -1769,20 +1774,20 @@ namespace Observatory
                     if (parkconfirm)
                     {
                         mountSafe = "Parked";
-                        mountext.BackColor = Color.LightGreen;
+                        mountText.BackColor = Color.LightGreen;
                         parktext = "Unpark";
                     }
                     else  // sensor does not say it is at park
                     {
                         mountSafe = "Not at Park";
-                        mountext.BackColor = Color.DarkOrange;
+                        mountText.BackColor = Color.DarkOrange;
                         parktext = "Park";
                     }
                 }
                 else  // roof not connected or busy
                 {
                     mountSafe = "Unknown";
-                    mountext.BackColor = Color.DarkOrange;
+                    mountText.BackColor = Color.DarkOrange;
                 }
                 if (mountConnected && mountSafe != "Parked")  // update mount status if not in park position-
                 {
@@ -1790,14 +1795,14 @@ namespace Observatory
                     {
                         mountSafe = "Tracking";
                         trackingtext = "Tracking Off";
-                        mountext.BackColor = Color.DarkOrange;
+                        mountText.BackColor = Color.DarkOrange;
                         aborted = false;
                         parktext = "Park";
                     }
                     else if (mount.AtHome)
                     {
                         mountSafe = "Homed";
-                        mountext.BackColor = Color.DarkOrange;
+                        mountText.BackColor = Color.DarkOrange;
                         aborted = false;
                         trackingtext = "Tracking --";
                         parktext = "Park";
@@ -1807,7 +1812,7 @@ namespace Observatory
                         if (mount.Slewing)  // mount can report slewing and tracking at same time, so worse case is slewing for abort actionss
                         {
                             mountSafe = "Slewing";
-                            mountext.BackColor = Color.DarkOrange;
+                            mountText.BackColor = Color.DarkOrange;
                             trackingtext = "Tracking --";
                             parktext = "Park --";
                         }
@@ -1815,7 +1820,7 @@ namespace Observatory
                 }
                 btnTrackTog.Text = trackingtext;  // doing this here with a string variable stops flicker on display
                 btnPark.Text = parktext;
-                mountext.Text = mountSafe;  // update display
+                mountText.Text = mountSafe;  // update display
             }
             catch (Exception)
             {
@@ -1826,7 +1831,7 @@ namespace Observatory
         // power switch functions  ( x4)
         // toggleswitch(x) is customized to select different outputs depending on the connected hardware
         // or if multiple devices are being combined using darkskygeek's hub
-        private void toggleswitch0(object sender, EventArgs e)
+        private void ToggleSwitch0(object sender, EventArgs e)
         {
             try
             {
@@ -1841,7 +1846,7 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "relay 0 error");
             }
         }
-        private void toggleswitch1(object sender, EventArgs e)
+        private void ToggleSwitch1(object sender, EventArgs e)
         {
             try
             {
@@ -1871,7 +1876,7 @@ namespace Observatory
             }
         }
         
-        private void toggleswitch2(object sender, EventArgs e)
+        private void ToggleSwitch2(object sender, EventArgs e)
         {
             try
             {
@@ -1900,7 +1905,7 @@ namespace Observatory
                 statusbox.AppendText(Environment.NewLine + "switch 2 error");
             }
         }
-        private void toggleswitch3(object sender, EventArgs e)
+        private void ToggleSwitch3(object sender, EventArgs e)
         {
             try
             {
@@ -1931,7 +1936,7 @@ namespace Observatory
         }
 
         // reads switch position - normal logic
-        private void getswitchstate()
+        private void GetSwitchState()
         {
             try
             {
@@ -1963,7 +1968,7 @@ namespace Observatory
         }
 
         // display toggle state
-        private void showswitchstate()
+        private void ShowSwitchState()
         {
             try
             {
@@ -1985,12 +1990,12 @@ namespace Observatory
         // utility functions
 
         // read humidity value from form and store
-        private void sethumidity(object sender, EventArgs e)
+        private void SetHumidityLimit(object sender, EventArgs e)
         {
             try
             {
                 maxHumidity = Convert.ToDouble(humidlimit.Value);
-                this.filewrite();
+                this.WriteFile();
             }
             catch
             {
@@ -1999,14 +2004,14 @@ namespace Observatory
         }
 
         // experimental overall shuttdown method - disconnect devices and then power through switches
-        private void shutdown(object sender, EventArgs e)
+        private void Shutdown(object sender, EventArgs e)
         {
             try
             {
-                if (mountConnected) disctelescope();  // disconnect mount driver
-                if (roofConnected) discroof();  // disconnect roof driver
-                if (safetyconnected) discsafe();  // disconnect safety monitor
-                if (weatherconnected) discweather();  // disconnect weather monitor
+                if (mountConnected) DisconnectTelescope();  // disconnect mount driver
+                if (roofConnected) DisconnectDome();  // disconnect roof driver
+                if (safetyConnected) DisconnectSafety();  // disconnect safety monitor
+                if (weatherConnected) DisconnectWeather();  // disconnect weather monitor
                 if (switchconnected)
                 {
                     for (short i = 0; i < 4; i++)
@@ -2014,7 +2019,7 @@ namespace Observatory
                         toggle.SetSwitch(i, switchOff); // turn off all switches
                         power[i] = false;                                 
                     }
-                    discswitch();  // now disconnect ASCOM driver
+                    DisconnectSwitch();  // now disconnect ASCOM driver
                 }
                 Application.Exit();
             }
@@ -2024,8 +2029,8 @@ namespace Observatory
             }
         }
 
-        // filewrite() saves device choices and variables to MyDocuments/ASCOM/Obsy/obsy.txt
-        private void filewrite()
+        // WriteFile() saves device choices and variables to MyDocuments/ASCOM/Obsy/obsy.txt
+        private void WriteFile()
         {
             try
             {
@@ -2045,8 +2050,8 @@ namespace Observatory
             }
         }
 
-        // fileread() reads device choices and variables from MyDocuments/ASCOM/Obsy/obsy.txt
-        private void fileread()
+        // ReadFile() reads device choices and variables from MyDocuments/ASCOM/Obsy/obsy.txt
+        private void ReadFile()
         {
             try
             {

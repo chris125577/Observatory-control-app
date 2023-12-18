@@ -53,9 +53,9 @@
             this.general_status = new System.Windows.Forms.Timer(this.components);
             this.tabs = new System.Windows.Forms.TabControl();
             this.CtrlTabPage = new System.Windows.Forms.TabPage();
-            this.cloudtext = new System.Windows.Forms.TextBox();
+            this.cloudText = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.sqmtext = new System.Windows.Forms.TextBox();
+            this.sqmText = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.LogLabel = new System.Windows.Forms.Label();
             this.statusbox = new System.Windows.Forms.TextBox();
@@ -74,18 +74,18 @@
             this.btnAutoOpen = new System.Windows.Forms.Button();
             this.btnAutoClose = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
-            this.pressuretext = new System.Windows.Forms.TextBox();
+            this.pressureText = new System.Windows.Forms.TextBox();
             this.pressurelabel = new System.Windows.Forms.Label();
-            this.temptext = new System.Windows.Forms.TextBox();
+            this.tempText = new System.Windows.Forms.TextBox();
             this.templabel = new System.Windows.Forms.Label();
             this.humidlabel = new System.Windows.Forms.Label();
             this.imaginglabel = new System.Windows.Forms.Label();
-            this.humidtext = new System.Windows.Forms.TextBox();
+            this.humidText = new System.Windows.Forms.TextBox();
             this.mountlabel = new System.Windows.Forms.Label();
-            this.imagingtext = new System.Windows.Forms.TextBox();
+            this.imagingText = new System.Windows.Forms.TextBox();
             this.drytext = new System.Windows.Forms.TextBox();
             this.rainlabel = new System.Windows.Forms.Label();
-            this.mountext = new System.Windows.Forms.TextBox();
+            this.mountText = new System.Windows.Forms.TextBox();
             this.rooftext = new System.Windows.Forms.TextBox();
             this.StatusLabel = new System.Windows.Forms.Label();
             this.rooflabel = new System.Windows.Forms.Label();
@@ -167,7 +167,7 @@
             this.btnRelaySel.TabIndex = 7;
             this.btnRelaySel.Text = "Relay";
             this.btnRelaySel.UseVisualStyleBackColor = false;
-            this.btnRelaySel.Click += new System.EventHandler(this.setswitch);
+            this.btnRelaySel.Click += new System.EventHandler(this.SetSwitch);
             // 
             // btnWeatherSel
             // 
@@ -182,7 +182,7 @@
             this.btnWeatherSel.TabIndex = 6;
             this.btnWeatherSel.Text = "Weather";
             this.btnWeatherSel.UseVisualStyleBackColor = false;
-            this.btnWeatherSel.Click += new System.EventHandler(this.setweather);
+            this.btnWeatherSel.Click += new System.EventHandler(this.SetWeather);
             // 
             // btnSafetySel
             // 
@@ -197,7 +197,7 @@
             this.btnSafetySel.TabIndex = 5;
             this.btnSafetySel.Text = "Safety Monitor";
             this.btnSafetySel.UseVisualStyleBackColor = false;
-            this.btnSafetySel.Click += new System.EventHandler(this.setsafety);
+            this.btnSafetySel.Click += new System.EventHandler(this.SetSafety);
             // 
             // btnMountSel
             // 
@@ -212,7 +212,7 @@
             this.btnMountSel.TabIndex = 4;
             this.btnMountSel.Text = "Mount";
             this.btnMountSel.UseVisualStyleBackColor = false;
-            this.btnMountSel.Click += new System.EventHandler(this.setmount);
+            this.btnMountSel.Click += new System.EventHandler(this.SetMount);
             // 
             // btnDomeSel
             // 
@@ -227,7 +227,7 @@
             this.btnDomeSel.TabIndex = 3;
             this.btnDomeSel.Text = "Dome";
             this.btnDomeSel.UseVisualStyleBackColor = false;
-            this.btnDomeSel.Click += new System.EventHandler(this.setroof);
+            this.btnDomeSel.Click += new System.EventHandler(this.SetRoof);
             // 
             // connectgroup
             // 
@@ -260,7 +260,7 @@
             this.btnConnSwitch.TabIndex = 9;
             this.btnConnSwitch.Text = "Relay";
             this.btnConnSwitch.UseVisualStyleBackColor = false;
-            this.btnConnSwitch.Click += new System.EventHandler(this.connectswitch);
+            this.btnConnSwitch.Click += new System.EventHandler(this.ConnectSwitch);
             // 
             // btnConnSafety
             // 
@@ -275,7 +275,7 @@
             this.btnConnSafety.TabIndex = 8;
             this.btnConnSafety.Text = "SafetyMonitor";
             this.btnConnSafety.UseVisualStyleBackColor = false;
-            this.btnConnSafety.Click += new System.EventHandler(this.connectsafety);
+            this.btnConnSafety.Click += new System.EventHandler(this.ConnectSafety);
             // 
             // btnConnWeather
             // 
@@ -290,7 +290,7 @@
             this.btnConnWeather.TabIndex = 7;
             this.btnConnWeather.Text = "Weather";
             this.btnConnWeather.UseVisualStyleBackColor = false;
-            this.btnConnWeather.Click += new System.EventHandler(this.connectweather);
+            this.btnConnWeather.Click += new System.EventHandler(this.ConnectWeather);
             // 
             // btnConnDome
             // 
@@ -305,7 +305,7 @@
             this.btnConnDome.TabIndex = 3;
             this.btnConnDome.Text = "Dome";
             this.btnConnDome.UseVisualStyleBackColor = false;
-            this.btnConnDome.Click += new System.EventHandler(this.connectroof);
+            this.btnConnDome.Click += new System.EventHandler(this.ConnectDome);
             // 
             // btnConnMount
             // 
@@ -320,7 +320,7 @@
             this.btnConnMount.TabIndex = 4;
             this.btnConnMount.Text = "Mount";
             this.btnConnMount.UseVisualStyleBackColor = false;
-            this.btnConnMount.Click += new System.EventHandler(this.connecttelescope);
+            this.btnConnMount.Click += new System.EventHandler(this.ConnectTelescope);
             // 
             // disconnectgroup
             // 
@@ -353,7 +353,7 @@
             this.btnDiscSwitch.TabIndex = 10;
             this.btnDiscSwitch.Text = "Relay";
             this.btnDiscSwitch.UseVisualStyleBackColor = false;
-            this.btnDiscSwitch.Click += new System.EventHandler(this.disconnectrelay);
+            this.btnDiscSwitch.Click += new System.EventHandler(this.DisconnectRelay);
             // 
             // btnDiscSafety
             // 
@@ -368,7 +368,7 @@
             this.btnDiscSafety.TabIndex = 10;
             this.btnDiscSafety.Text = "SafetyMonitor";
             this.btnDiscSafety.UseVisualStyleBackColor = false;
-            this.btnDiscSafety.Click += new System.EventHandler(this.disconnectsafety);
+            this.btnDiscSafety.Click += new System.EventHandler(this.DisconnectSafetyMonitor);
             // 
             // btnDiscWeather
             // 
@@ -383,7 +383,7 @@
             this.btnDiscWeather.TabIndex = 9;
             this.btnDiscWeather.Text = "Weather";
             this.btnDiscWeather.UseVisualStyleBackColor = false;
-            this.btnDiscWeather.Click += new System.EventHandler(this.disconnectweather);
+            this.btnDiscWeather.Click += new System.EventHandler(this.DisconnectEnvironment);
             // 
             // btnDiscMount
             // 
@@ -398,7 +398,7 @@
             this.btnDiscMount.TabIndex = 4;
             this.btnDiscMount.Text = "Mount";
             this.btnDiscMount.UseVisualStyleBackColor = false;
-            this.btnDiscMount.Click += new System.EventHandler(this.disconnecttelescope);
+            this.btnDiscMount.Click += new System.EventHandler(this.DisconnectMount);
             // 
             // btnDiscDome
             // 
@@ -413,13 +413,13 @@
             this.btnDiscDome.TabIndex = 3;
             this.btnDiscDome.Text = "Dome";
             this.btnDiscDome.UseVisualStyleBackColor = false;
-            this.btnDiscDome.Click += new System.EventHandler(this.disconnectroof);
+            this.btnDiscDome.Click += new System.EventHandler(this.DisconnectRoof);
             // 
             // general_status
             // 
             this.general_status.Enabled = true;
             this.general_status.Interval = 500;
-            this.general_status.Tick += new System.EventHandler(this.refreshall);
+            this.general_status.Tick += new System.EventHandler(this.RefreshAll);
             // 
             // tabs
             // 
@@ -438,27 +438,27 @@
             // CtrlTabPage
             // 
             this.CtrlTabPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.CtrlTabPage.Controls.Add(this.cloudtext);
+            this.CtrlTabPage.Controls.Add(this.cloudText);
             this.CtrlTabPage.Controls.Add(this.label3);
-            this.CtrlTabPage.Controls.Add(this.sqmtext);
+            this.CtrlTabPage.Controls.Add(this.sqmText);
             this.CtrlTabPage.Controls.Add(this.label2);
             this.CtrlTabPage.Controls.Add(this.LogLabel);
             this.CtrlTabPage.Controls.Add(this.statusbox);
             this.CtrlTabPage.Controls.Add(this.groupBox3);
             this.CtrlTabPage.Controls.Add(this.groupBox2);
             this.CtrlTabPage.Controls.Add(this.groupBox1);
-            this.CtrlTabPage.Controls.Add(this.pressuretext);
+            this.CtrlTabPage.Controls.Add(this.pressureText);
             this.CtrlTabPage.Controls.Add(this.pressurelabel);
-            this.CtrlTabPage.Controls.Add(this.temptext);
+            this.CtrlTabPage.Controls.Add(this.tempText);
             this.CtrlTabPage.Controls.Add(this.templabel);
             this.CtrlTabPage.Controls.Add(this.humidlabel);
             this.CtrlTabPage.Controls.Add(this.imaginglabel);
-            this.CtrlTabPage.Controls.Add(this.humidtext);
+            this.CtrlTabPage.Controls.Add(this.humidText);
             this.CtrlTabPage.Controls.Add(this.mountlabel);
-            this.CtrlTabPage.Controls.Add(this.imagingtext);
+            this.CtrlTabPage.Controls.Add(this.imagingText);
             this.CtrlTabPage.Controls.Add(this.drytext);
             this.CtrlTabPage.Controls.Add(this.rainlabel);
-            this.CtrlTabPage.Controls.Add(this.mountext);
+            this.CtrlTabPage.Controls.Add(this.mountText);
             this.CtrlTabPage.Controls.Add(this.rooftext);
             this.CtrlTabPage.Controls.Add(this.StatusLabel);
             this.CtrlTabPage.Controls.Add(this.rooflabel);
@@ -471,17 +471,17 @@
             this.CtrlTabPage.TabIndex = 0;
             this.CtrlTabPage.Text = "Control and Status";
             // 
-            // cloudtext
+            // cloudText
             // 
-            this.cloudtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cloudtext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cloudtext.Location = new System.Drawing.Point(260, 203);
-            this.cloudtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.cloudtext.Name = "cloudtext";
-            this.cloudtext.ReadOnly = true;
-            this.cloudtext.Size = new System.Drawing.Size(99, 20);
-            this.cloudtext.TabIndex = 26;
-            this.cloudtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.cloudText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cloudText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.cloudText.Location = new System.Drawing.Point(260, 203);
+            this.cloudText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.cloudText.Name = "cloudText";
+            this.cloudText.ReadOnly = true;
+            this.cloudText.Size = new System.Drawing.Size(99, 20);
+            this.cloudText.TabIndex = 26;
+            this.cloudText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
@@ -495,17 +495,17 @@
             this.label3.Text = "Cloud";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // sqmtext
+            // sqmText
             // 
-            this.sqmtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.sqmtext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.sqmtext.Location = new System.Drawing.Point(260, 179);
-            this.sqmtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.sqmtext.Name = "sqmtext";
-            this.sqmtext.ReadOnly = true;
-            this.sqmtext.Size = new System.Drawing.Size(99, 20);
-            this.sqmtext.TabIndex = 24;
-            this.sqmtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.sqmText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.sqmText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.sqmText.Location = new System.Drawing.Point(260, 179);
+            this.sqmText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.sqmText.Name = "sqmText";
+            this.sqmText.ReadOnly = true;
+            this.sqmText.Size = new System.Drawing.Size(99, 20);
+            this.sqmText.TabIndex = 24;
+            this.sqmText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
@@ -573,7 +573,7 @@
             this.button2.TabIndex = 23;
             this.button2.Text = "Shutdown";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.shutdown);
+            this.button2.Click += new System.EventHandler(this.Shutdown);
             // 
             // btnDiscAll
             // 
@@ -588,7 +588,7 @@
             this.btnDiscAll.TabIndex = 22;
             this.btnDiscAll.Text = "Disconnect All";
             this.btnDiscAll.UseVisualStyleBackColor = false;
-            this.btnDiscAll.Click += new System.EventHandler(this.disconnectall);
+            this.btnDiscAll.Click += new System.EventHandler(this.DisconnectAll);
             // 
             // btnAbort
             // 
@@ -619,7 +619,7 @@
             this.btnConnAll.TabIndex = 21;
             this.btnConnAll.Text = "Connect All";
             this.btnConnAll.UseVisualStyleBackColor = false;
-            this.btnConnAll.Click += new System.EventHandler(this.connectall);
+            this.btnConnAll.Click += new System.EventHandler(this.ConnectAll);
             // 
             // groupBox2
             // 
@@ -650,7 +650,7 @@
             this.btnHibernate.TabIndex = 25;
             this.btnHibernate.Text = "Hibernate";
             this.btnHibernate.UseVisualStyleBackColor = false;
-            this.btnHibernate.Click += new System.EventHandler(this.hibernate);
+            this.btnHibernate.Click += new System.EventHandler(this.Hibernate);
             // 
             // btnTrackTog
             // 
@@ -698,7 +698,7 @@
             this.btnPark.TabIndex = 0;
             this.btnPark.Text = "Park --";
             this.btnPark.UseVisualStyleBackColor = false;
-            this.btnPark.Click += new System.EventHandler(this.parktoggle);
+            this.btnPark.Click += new System.EventHandler(this.TogglePark);
             // 
             // groupBox1
             // 
@@ -745,7 +745,7 @@
             this.btnAutoOpen.TabIndex = 12;
             this.btnAutoOpen.Text = "Auto Open";
             this.btnAutoOpen.UseVisualStyleBackColor = false;
-            this.btnAutoOpen.Click += new System.EventHandler(this.queautoroofopen);
+            this.btnAutoOpen.Click += new System.EventHandler(this.CueAutoRoofOpen);
             // 
             // btnAutoClose
             // 
@@ -760,7 +760,7 @@
             this.btnAutoClose.TabIndex = 13;
             this.btnAutoClose.Text = "Auto Close";
             this.btnAutoClose.UseVisualStyleBackColor = false;
-            this.btnAutoClose.Click += new System.EventHandler(this.queautoroofclose);
+            this.btnAutoClose.Click += new System.EventHandler(this.CueAutoRoofClose);
             // 
             // btnOpen
             // 
@@ -775,19 +775,19 @@
             this.btnOpen.TabIndex = 1;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = false;
-            this.btnOpen.Click += new System.EventHandler(this.roofopen);
+            this.btnOpen.Click += new System.EventHandler(this.OpenRoof);
             // 
-            // pressuretext
+            // pressureText
             // 
-            this.pressuretext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pressuretext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pressuretext.Location = new System.Drawing.Point(260, 155);
-            this.pressuretext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.pressuretext.Name = "pressuretext";
-            this.pressuretext.ReadOnly = true;
-            this.pressuretext.Size = new System.Drawing.Size(99, 20);
-            this.pressuretext.TabIndex = 19;
-            this.pressuretext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.pressureText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pressureText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.pressureText.Location = new System.Drawing.Point(260, 155);
+            this.pressureText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.pressureText.Name = "pressureText";
+            this.pressureText.ReadOnly = true;
+            this.pressureText.Size = new System.Drawing.Size(99, 20);
+            this.pressureText.TabIndex = 19;
+            this.pressureText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pressurelabel
             // 
@@ -801,17 +801,17 @@
             this.pressurelabel.Text = "Pressure";
             this.pressurelabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // temptext
+            // tempText
             // 
-            this.temptext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.temptext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.temptext.Location = new System.Drawing.Point(260, 130);
-            this.temptext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.temptext.Name = "temptext";
-            this.temptext.ReadOnly = true;
-            this.temptext.Size = new System.Drawing.Size(99, 20);
-            this.temptext.TabIndex = 12;
-            this.temptext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tempText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tempText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tempText.Location = new System.Drawing.Point(260, 130);
+            this.tempText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.tempText.Name = "tempText";
+            this.tempText.ReadOnly = true;
+            this.tempText.Size = new System.Drawing.Size(99, 20);
+            this.tempText.TabIndex = 12;
+            this.tempText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // templabel
             // 
@@ -849,17 +849,17 @@
             this.imaginglabel.Text = "Safety";
             this.imaginglabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // humidtext
+            // humidText
             // 
-            this.humidtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.humidtext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.humidtext.Location = new System.Drawing.Point(260, 105);
-            this.humidtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.humidtext.Name = "humidtext";
-            this.humidtext.ReadOnly = true;
-            this.humidtext.Size = new System.Drawing.Size(99, 20);
-            this.humidtext.TabIndex = 17;
-            this.humidtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.humidText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.humidText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.humidText.Location = new System.Drawing.Point(260, 105);
+            this.humidText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.humidText.Name = "humidText";
+            this.humidText.ReadOnly = true;
+            this.humidText.Size = new System.Drawing.Size(99, 20);
+            this.humidText.TabIndex = 17;
+            this.humidText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // mountlabel
             // 
@@ -873,17 +873,17 @@
             this.mountlabel.Text = "Mount";
             this.mountlabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // imagingtext
+            // imagingText
             // 
-            this.imagingtext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.imagingtext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.imagingtext.Location = new System.Drawing.Point(260, 80);
-            this.imagingtext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.imagingtext.Name = "imagingtext";
-            this.imagingtext.ReadOnly = true;
-            this.imagingtext.Size = new System.Drawing.Size(99, 20);
-            this.imagingtext.TabIndex = 14;
-            this.imagingtext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.imagingText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.imagingText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.imagingText.Location = new System.Drawing.Point(260, 80);
+            this.imagingText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.imagingText.Name = "imagingText";
+            this.imagingText.ReadOnly = true;
+            this.imagingText.Size = new System.Drawing.Size(99, 20);
+            this.imagingText.TabIndex = 14;
+            this.imagingText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // drytext
             // 
@@ -909,17 +909,17 @@
             this.rainlabel.Text = "Rain";
             this.rainlabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // mountext
+            // mountText
             // 
-            this.mountext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.mountext.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.mountext.Location = new System.Drawing.Point(260, 32);
-            this.mountext.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.mountext.Name = "mountext";
-            this.mountext.ReadOnly = true;
-            this.mountext.Size = new System.Drawing.Size(99, 20);
-            this.mountext.TabIndex = 6;
-            this.mountext.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.mountText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.mountText.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.mountText.Location = new System.Drawing.Point(260, 32);
+            this.mountText.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.mountText.Name = "mountText";
+            this.mountText.ReadOnly = true;
+            this.mountText.Size = new System.Drawing.Size(99, 20);
+            this.mountText.TabIndex = 6;
+            this.mountText.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // rooftext
             // 
@@ -986,7 +986,7 @@
             this.btnSwitch2.TabIndex = 1;
             this.btnSwitch2.Text = "Camera";
             this.btnSwitch2.UseVisualStyleBackColor = false;
-            this.btnSwitch2.Click += new System.EventHandler(this.toggleswitch1);
+            this.btnSwitch2.Click += new System.EventHandler(this.ToggleSwitch1);
             // 
             // btnSwitch1
             // 
@@ -1002,7 +1002,7 @@
             this.btnSwitch1.TabIndex = 0;
             this.btnSwitch1.Text = "Mount";
             this.btnSwitch1.UseVisualStyleBackColor = false;
-            this.btnSwitch1.Click += new System.EventHandler(this.toggleswitch0);
+            this.btnSwitch1.Click += new System.EventHandler(this.ToggleSwitch0);
             // 
             // btnSwitch3
             // 
@@ -1018,7 +1018,7 @@
             this.btnSwitch3.TabIndex = 2;
             this.btnSwitch3.Text = "Fans";
             this.btnSwitch3.UseVisualStyleBackColor = false;
-            this.btnSwitch3.Click += new System.EventHandler(this.toggleswitch2);
+            this.btnSwitch3.Click += new System.EventHandler(this.ToggleSwitch2);
             // 
             // btnSwitch4
             // 
@@ -1035,7 +1035,7 @@
             this.btnSwitch4.TabIndex = 3;
             this.btnSwitch4.Text = "External";
             this.btnSwitch4.UseVisualStyleBackColor = false;
-            this.btnSwitch4.Click += new System.EventHandler(this.toggleswitch3);
+            this.btnSwitch4.Click += new System.EventHandler(this.ToggleSwitch3);
             // 
             // setuptab
             // 
@@ -1121,7 +1121,7 @@
             this.button5.TabIndex = 3;
             this.button5.Text = "Set %RH";
             this.button5.UseVisualStyleBackColor = false;
-            this.button5.Click += new System.EventHandler(this.sethumidity);
+            this.button5.Click += new System.EventHandler(this.SetHumidityLimit);
             // 
             // tabPage2
             // 
@@ -1148,7 +1148,7 @@
             "humidity %",
             "dewpoint C",
             "sky quality SQM",
-            "cloud %"});
+            "CloudCalculator %"});
             this.btngraphsel.Location = new System.Drawing.Point(88, 5);
             this.btngraphsel.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.btngraphsel.Name = "btngraphsel";
@@ -1245,7 +1245,7 @@
             this.btnDisBeep.TabIndex = 12;
             this.btnDisBeep.Text = "Disable Beeper";
             this.btnDisBeep.UseVisualStyleBackColor = false;
-            this.btnDisBeep.Click += new System.EventHandler(this.disablebeep);
+            this.btnDisBeep.Click += new System.EventHandler(this.DisableBeep);
             // 
             // btnEnBeep
             // 
@@ -1260,7 +1260,7 @@
             this.btnEnBeep.TabIndex = 11;
             this.btnEnBeep.Text = "Enable Beeper";
             this.btnEnBeep.UseVisualStyleBackColor = false;
-            this.btnEnBeep.Click += new System.EventHandler(this.enablebeep);
+            this.btnEnBeep.Click += new System.EventHandler(this.EnableBeep);
             // 
             // btnDisParkSense
             // 
@@ -1275,7 +1275,7 @@
             this.btnDisParkSense.TabIndex = 10;
             this.btnDisParkSense.Text = "Disable Park Sensor";
             this.btnDisParkSense.UseVisualStyleBackColor = false;
-            this.btnDisParkSense.Click += new System.EventHandler(this.noparksense);
+            this.btnDisParkSense.Click += new System.EventHandler(this.NoParkSensor);
             // 
             // btnEnRainSense
             // 
@@ -1290,7 +1290,7 @@
             this.btnEnRainSense.TabIndex = 7;
             this.btnEnRainSense.Text = "Enable Rain Sensor";
             this.btnEnRainSense.UseVisualStyleBackColor = false;
-            this.btnEnRainSense.Click += new System.EventHandler(this.rainsense);
+            this.btnEnRainSense.Click += new System.EventHandler(this.RainSensor);
             // 
             // btnDisRainSense
             // 
@@ -1305,7 +1305,7 @@
             this.btnDisRainSense.TabIndex = 8;
             this.btnDisRainSense.Text = "Disable Rain Sensor";
             this.btnDisRainSense.UseVisualStyleBackColor = false;
-            this.btnDisRainSense.Click += new System.EventHandler(this.norainsense);
+            this.btnDisRainSense.Click += new System.EventHandler(this.NoRainSensor);
             // 
             // btnEnParkSense
             // 
@@ -1320,7 +1320,7 @@
             this.btnEnParkSense.TabIndex = 9;
             this.btnEnParkSense.Text = "Enable Park Sensor";
             this.btnEnParkSense.UseVisualStyleBackColor = false;
-            this.btnEnParkSense.Click += new System.EventHandler(this.parksense);
+            this.btnEnParkSense.Click += new System.EventHandler(this.ParkSensor);
             // 
             // groupBox5
             // 
@@ -1474,20 +1474,20 @@
         private System.Windows.Forms.Label rooflabel;
         private System.Windows.Forms.Label StatusLabel;
         private System.Windows.Forms.TextBox rooftext;
-        private System.Windows.Forms.TextBox temptext;
-        private System.Windows.Forms.TextBox mountext;
+        private System.Windows.Forms.TextBox tempText;
+        private System.Windows.Forms.TextBox mountText;
         private System.Windows.Forms.Label rainlabel;
         private System.Windows.Forms.Label templabel;
         private System.Windows.Forms.TextBox drytext;
-        private System.Windows.Forms.TextBox imagingtext;
+        private System.Windows.Forms.TextBox imagingText;
         private System.Windows.Forms.Label mountlabel;
         private System.Windows.Forms.Button btnAutoClose;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.TextBox humidtext;
+        private System.Windows.Forms.TextBox humidText;
         private System.Windows.Forms.Label imaginglabel;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Label humidlabel;
-        private System.Windows.Forms.TextBox pressuretext;
+        private System.Windows.Forms.TextBox pressureText;
         private System.Windows.Forms.Label pressurelabel;
         private System.Windows.Forms.Button btnWeatherSel;
         private System.Windows.Forms.Button btnSafetySel;
@@ -1538,9 +1538,9 @@
         private System.Windows.Forms.Label select;
         private System.Windows.Forms.Button btnDisBeep;
         private System.Windows.Forms.Button btnEnBeep;
-        private System.Windows.Forms.TextBox sqmtext;
+        private System.Windows.Forms.TextBox sqmText;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox cloudtext;
+        private System.Windows.Forms.TextBox cloudText;
         private System.Windows.Forms.Label label3;
     }
 }
