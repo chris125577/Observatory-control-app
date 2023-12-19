@@ -320,7 +320,7 @@
             this.btnConnMount.TabIndex = 4;
             this.btnConnMount.Text = "Mount";
             this.btnConnMount.UseVisualStyleBackColor = false;
-            this.btnConnMount.Click += new System.EventHandler(this.ConnectTelescope);
+            this.btnConnMount.Click += new System.EventHandler(this.ConnectMount);
             // 
             // disconnectgroup
             // 

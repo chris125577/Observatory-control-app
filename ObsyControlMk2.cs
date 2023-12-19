@@ -260,7 +260,7 @@ namespace Observatory
                 System.Windows.Forms.MessageBox.Show("Dome did not connect");
             }
         }
-        private void ConnectTelescope(object sender, EventArgs e)
+        private void ConnectMount(object sender, EventArgs e)
         {
             try
             {
@@ -305,9 +305,9 @@ namespace Observatory
                     btnSwitch1.Text = toggle.GetSwitchDescription(0);
                     if(switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {        
-                        btnSwitch2.Text = toggle.GetSwitchDescription(12); // Camera 1 usb
-                        btnSwitch3.Text = toggle.GetSwitchDescription(13); // Camera 2 usb
-                        btnSwitch4.Text = toggle.GetSwitchDescription(14); // guider usb
+                        btnSwitch2.Text = toggle.GetSwitchDescription(10); // Camera power
+                        btnSwitch3.Text = toggle.GetSwitchDescription(12); // Camera 1 usb
+                        btnSwitch4.Text = toggle.GetSwitchDescription(13); // Camera 2 usb
                     }
                     if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
                     {
@@ -317,9 +317,9 @@ namespace Observatory
                     }
                     if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
                     {
-                        btnSwitch2.Text = toggle.GetSwitchDescription(4); // cam 1 usb
-                        btnSwitch3.Text = toggle.GetSwitchDescription(5); // cam 2 usb
-                        btnSwitch4.Text = toggle.GetSwitchDescription(6); // guider
+                        btnSwitch2.Text = toggle.GetSwitchDescription(2); // cam power
+                        btnSwitch3.Text = toggle.GetSwitchDescription(4); // cam 1 usb
+                        btnSwitch4.Text = toggle.GetSwitchDescription(5); // cam 2 usb
                     }
                         GetSwitchState();  // all at once
                 }
@@ -456,7 +456,7 @@ namespace Observatory
             {
                 ConnectSafety(sender, e);
                 ConnectDome(sender, e);
-                ConnectTelescope(sender, e);
+                ConnectMount(sender, e);
                 ConnectWeather(sender, e);
             }
 
@@ -1855,8 +1855,8 @@ namespace Observatory
 
                     if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        if (power[1]) toggle.SetSwitch(12, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(12, switchOn);
+                        if (power[1]) toggle.SetSwitch(10, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(10, switchOn);
                     }
                     if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
                     {
@@ -1865,8 +1865,8 @@ namespace Observatory
                     }
                     if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
                     {
-                        if (power[1]) toggle.SetSwitch(4, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(4, switchOn);
+                        if (power[1]) toggle.SetSwitch(2, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(2, switchOn);
                     }
                 }
             }
@@ -1885,8 +1885,8 @@ namespace Observatory
 
                     if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        if (power[2]) toggle.SetSwitch(13, switchOff);  // turn switch off                   
-                        else toggle.SetSwitch(13, switchOn);
+                        if (power[2]) toggle.SetSwitch(12, switchOff);  // turn switch off                   
+                        else toggle.SetSwitch(12, switchOn);
                     }
                     if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
                     {
@@ -1895,8 +1895,8 @@ namespace Observatory
                     }
                     if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
                     {
-                        if (power[2]) toggle.SetSwitch(5, switchOff);  // turn switch off                   
-                        else toggle.SetSwitch(5, switchOn);
+                        if (power[2]) toggle.SetSwitch(4, switchOff);  // turn switch off                   
+                        else toggle.SetSwitch(4, switchOn);
                     }
                 }
             }
@@ -1914,8 +1914,8 @@ namespace Observatory
 
                     if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        if (power[3]) toggle.SetSwitch(14, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(14, switchOn);
+                        if (power[3]) toggle.SetSwitch(13, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(13, switchOn);
                     }
                     if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
                     {
@@ -1924,8 +1924,8 @@ namespace Observatory
                     }
                     if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
                     {
-                        if (power[3]) toggle.SetSwitch(6, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(6, switchOn);
+                        if (power[3]) toggle.SetSwitch(5, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(5, switchOn);
                     }
                 }
             }
@@ -1945,9 +1945,9 @@ namespace Observatory
                     power[0] = toggle.GetSwitch(0);
                     if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        power[1] = toggle.GetSwitch(12);
-                        power[2] = toggle.GetSwitch(13);
-                        power[3] = toggle.GetSwitch(14); 
+                        power[1] = toggle.GetSwitch(10);
+                        power[2] = toggle.GetSwitch(12);
+                        power[3] = toggle.GetSwitch(13); 
                     }
                     if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
                     {
@@ -1955,9 +1955,9 @@ namespace Observatory
                     }
                     if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
                     {
-                        power[1] = toggle.GetSwitch(4);
-                        power[2] = toggle.GetSwitch(5);
-                        power[3] = toggle.GetSwitch(6);
+                        power[1] = toggle.GetSwitch(2);
+                        power[2] = toggle.GetSwitch(4);
+                        power[3] = toggle.GetSwitch(5);
                     }                    
                 }
             }
