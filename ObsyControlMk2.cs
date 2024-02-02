@@ -37,6 +37,7 @@ using System.Windows.Forms;
 // 11.0 - overhaul, including better comments
 // 11.1 - changed sky temperature to CloudCalculator cover
 // 11.2 - changed 1s form timer to 2s and 0.5s for non- and critical conditions
+// 11.3 - the rain sensor status is updated to a file (safefile.txt) when conditions change 
 
 namespace Observatory
 {
@@ -52,11 +53,14 @@ namespace Observatory
         private bool busy;  // flag to stop conflicting commands to Arduino
         private bool mountConnected, roofConnected, weatherConnected, safetyConnected, switchconnected;  // local variable to note current connected state
         private string mountSafe, roofSafe;      // used for local storage
+        private string settingsfile = "\\obsy.txt";
+        private string dryfile = "\\safety.txt";
+        private bool priorDry = true;  // old rain sensor status, to check for change 
         private bool priority = false;   // used to toggle priority actions in RefreshAll()
         private ShutterState roofStatus;             // used to store shutter status
         String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ASCOM\\Obsy";
         String safetyPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\AAG";
-        private bool queOpen, queClose, noRain, goodConditions, clearAir, clearSky; // boolean flags for deciding if roof is on "auto" mode operation
+        private bool queOpen, queClose, dry, goodConditions, clearAir, clearSky; // boolean flags for deciding if roof is on "auto" mode operation
         private double maxHumidity; // threshold for fog/mist
         private int mountTimeout;  // period in multiples of 2 seconds for error condition to apply to movements
         private int roofTimeout;  // period in multiples of 2 seconds for roof to move
@@ -127,14 +131,14 @@ namespace Observatory
             mountTimeout = 15; // response time period for mount to move (x2)
             roofTimeout = 20;  //  40 seconds for roof to complete movement
             // initialise flags  used to build up a composite safety flag
-            noRain = false;
+            dry = false;
             clearAir = false;
             clearSky = false;
             goodConditions = false;
             aborted = false;
             roofStatus = ShutterState.shutterError; // assume an error to start with
             // read in, if it exists, the connection settings file           
-            if (File.Exists(path + "\\obsy.txt")) ReadFile();
+            if (File.Exists(path + settingsfile)) ReadFile();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -241,6 +245,17 @@ namespace Observatory
                         btnConnDome.ForeColor = Color.Gray;
                         btnDiscDome.ForeColor = Color.White;
                         DisplaySensor(); // update sensor backgrounds to indicate sensors
+                        // initial Hydreon state
+                        if (dome.CommandBool("RAIN", false))
+                        {
+                            File.WriteAllText(path + dryfile, "unsafe");
+                            priorDry = false; // note reverse sense RAINING vs DRY
+                        }
+                        else
+                        {
+                            File.WriteAllText(path + dryfile, "safe");
+                            priorDry = true;
+                        }
                     }
                     else System.Windows.Forms.MessageBox.Show("Dome did not connect");
                 }
@@ -1323,7 +1338,7 @@ namespace Observatory
                             busy = true;
                             dome.CloseShutter();  // if mount parked, close roof
                             busy = false;
-                            if (!noRain) TurnOffMountSwitch(); // for extreme poor conditions, shut down
+                            if (!dry) TurnOffMountSwitch(); // for extreme poor conditions, shut down
                             queOpen = false;
                             btnAutoOpen.BackColor = Color.DarkOrange;
                             btnAutoOpen.ForeColor = Color.White;
@@ -1449,7 +1464,7 @@ namespace Observatory
                     RefreshSwitch();
                     RefreshWeather();
                     RefreshSafetyMonitor();
-                    goodConditions = noRain && clearAir && clearSky;  // amalgamation of air, sky and weather                          
+                    goodConditions = dry && clearAir && clearSky;  // amalgamation of air, sky and weather                          
                 }
                 priority = !priority;                
             }
@@ -1563,9 +1578,9 @@ namespace Observatory
                     if (!busy)
                     {
                         busy = true;
-                        noRain = !dome.CommandBool("RAIN", false);
+                        dry = !dome.CommandBool("RAIN", false);
                         busy = false;
-                        if (!noRain)
+                        if (!dry)
                         {
                             roofSafe = "Rain";
                             drytext.BackColor = Color.DarkOrange;
@@ -1576,9 +1591,15 @@ namespace Observatory
                             drytext.BackColor = Color.LightGreen;
                         }
                         drytext.Text = roofSafe;
+                        // update filesafe file
+                        if (priorDry != dry)
+                        {
+                            priorDry = dry;
+                            WriteSafeFile(dry); // update status
+                        }
                     }
                 }
-                else noRain = true;  // default if no rain detector
+                else dry = true;  // default if no rain detector
                 if (weatherConnected)
                 {
                     pressureText.Text = Math.Round(weather.Pressure, 2).ToString() + " hPa";
@@ -2042,21 +2063,36 @@ namespace Observatory
                 configure[4] = maxHumidity.ToString();
                 configure[5] = switchID;
                 if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
-                File.WriteAllLines(path + "\\obsy.txt", configure);
+                File.WriteAllLines(path + settingsfile, configure);
             }
             catch (System.UnauthorizedAccessException e)
             {
                 System.Windows.Forms.MessageBox.Show(e.Message);
             }
         }
-
+        // WriteSafeFile writes 'safe' or 'unsafe' to safety.txt file
+        private void WriteSafeFile(bool safe)
+        {
+            try
+            {
+                string drystring;
+                if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
+                if (safe) drystring = "safe";
+                else drystring = "unsafe";
+                File.WriteAllText(path + dryfile, drystring);
+            }
+            catch (System.UnauthorizedAccessException e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+            }
+        }
         // ReadFile() reads device choices and variables from MyDocuments/ASCOM/Obsy/obsy.txt
         private void ReadFile()
         {
             try
             {
                 string[] configure = new string[7];
-                configure = File.ReadAllLines(path + "\\obsy.txt");
+                configure = File.ReadAllLines(path + settingsfile);
                 domeId = configure[0];
                 mountId = configure[1];
                 weatherId = configure[2];
