@@ -287,7 +287,8 @@ namespace Observatory
                     mountText.Text = "connected";
                     btnConnMount.ForeColor = Color.Gray;
                     btnDiscMount.ForeColor = Color.White;
-                    if(!mount.CanFindHome || !mount.CanPark || !mount.CanPulseGuide)
+                    mount.UTCDate = (System.DateTime.UtcNow);
+                    if (!mount.CanFindHome || !mount.CanPark || !mount.CanPulseGuide)
                         System.Windows.Forms.MessageBox.Show("check mount park/home/guide settings");
                 }
                 else
@@ -317,25 +318,16 @@ namespace Observatory
                     btnConnSwitch.ForeColor = Color.Gray;
                     btnDiscSwitch.ForeColor = Color.White;
                     // populate text boxes with toggle names from driver/profile
-                    btnSwitch1.Text = toggle.GetSwitchDescription(0);
-                    if(switchID == "ASCOM.DarkSkyGeek.SwitchHub")
+                    btnSwitch1.Text = toggle.GetSwitchName(0);
+                    /*if(switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {        
                         btnSwitch2.Text = toggle.GetSwitchDescription(10); // Camera power
                         btnSwitch3.Text = toggle.GetSwitchDescription(12); // Camera 1 usb
                         btnSwitch4.Text = toggle.GetSwitchDescription(13); // Camera 2 usb
-                    }
-                    if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
-                    {
-                        btnSwitch2.Text = toggle.GetSwitchDescription(1); // Camera 1 usb
-                        btnSwitch3.Text = toggle.GetSwitchDescription(2); // aps-c
-                        btnSwitch4.Text = toggle.GetSwitchDescription(3); // dew
-                    }
-                    if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
-                    {
-                        btnSwitch2.Text = toggle.GetSwitchDescription(2); // cam power
-                        btnSwitch3.Text = toggle.GetSwitchDescription(4); // cam 1 usb
-                        btnSwitch4.Text = toggle.GetSwitchDescription(5); // cam 2 usb
-                    }
+                    }*/
+                    btnSwitch2.Text = toggle.GetSwitchName(1); // Camera 1 usb
+                        btnSwitch3.Text = toggle.GetSwitchName(2); // aps-c
+                        btnSwitch4.Text = toggle.GetSwitchName(3); // de
                         GetSwitchState();  // all at once
                 }
                 else
@@ -1873,22 +1865,13 @@ namespace Observatory
             {
                 if (switchconnected)
                 {
-
-                    if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
+                    /*if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
                         if (power[1]) toggle.SetSwitch(10, switchOff);  // turn toggle off                   
                         else toggle.SetSwitch(10, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
-                    {
-                        if (power[1]) toggle.SetSwitch(1, switchOff);  // turn toggle off                   
+                    }*/
+                    if (power[1]) toggle.SetSwitch(1, switchOff);  // turn toggle off                   
                         else toggle.SetSwitch(1, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
-                    {
-                        if (power[1]) toggle.SetSwitch(2, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(2, switchOn);
-                    }
                 }
             }
             catch (Exception)
@@ -1903,22 +1886,13 @@ namespace Observatory
             {
                 if (switchconnected)
                 {
-
-                    if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
+                    /*if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        if (power[2]) toggle.SetSwitch(12, switchOff);  // turn switch off                   
-                        else toggle.SetSwitch(12, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
-                    {
-                        if (power[2]) toggle.SetSwitch(2, switchOff);  // turn switch off                   
-                        else toggle.SetSwitch(2, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
-                    {
-                        if (power[2]) toggle.SetSwitch(4, switchOff);  // turn switch off                   
-                        else toggle.SetSwitch(4, switchOn);
-                    }
+                        if (power[1]) toggle.SetSwitch(10, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(10, switchOn);
+                    }*/
+                    if (power[2]) toggle.SetSwitch(2, switchOff);  // turn toggle off                   
+                    else toggle.SetSwitch(2, switchOn);
                 }
             }
             catch (Exception)
@@ -1932,22 +1906,13 @@ namespace Observatory
             {
                 if (switchconnected)
                 {
-
-                    if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
+                    /*if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
-                        if (power[3]) toggle.SetSwitch(13, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(13, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
-                    {
-                        if (power[3]) toggle.SetSwitch(3, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(3, switchOn);
-                    }
-                    if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
-                    {
-                        if (power[3]) toggle.SetSwitch(5, switchOff);  // turn toggle off                   
-                        else toggle.SetSwitch(5, switchOn);
-                    }
+                        if (power[1]) toggle.SetSwitch(10, switchOff);  // turn toggle off                   
+                        else toggle.SetSwitch(10, switchOn);
+                    }*/
+                    if (power[3]) toggle.SetSwitch(3, switchOff);  // turn toggle off                   
+                    else toggle.SetSwitch(3, switchOn);
                 }
             }
             catch (Exception)
@@ -1964,22 +1929,13 @@ namespace Observatory
                 if (switchconnected)
                 {
                     power[0] = toggle.GetSwitch(0);
-                    if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
+                    /*if (switchID == "ASCOM.DarkSkyGeek.SwitchHub")
                     {
                         power[1] = toggle.GetSwitch(10);
                         power[2] = toggle.GetSwitch(12);
                         power[3] = toggle.GetSwitch(13); 
-                    }
-                    if (switchID == "ASCOM.PegasusAstroPPBAdvance.Switch")
-                    {
-                        for (short i = 1; i < 4; i++) power[i] = toggle.GetSwitch(i); //all at once
-                    }
-                    if (switchID == "ASCOM.PegasusAstroUPBv2.Switch")
-                    {
-                        power[1] = toggle.GetSwitch(2);
-                        power[2] = toggle.GetSwitch(4);
-                        power[3] = toggle.GetSwitch(5);
-                    }                    
+                    }*/
+                    for (short i = 1; i < 4; i++) power[i] = toggle.GetSwitch(i); //all at once                   
                 }
             }
             catch (Exception)

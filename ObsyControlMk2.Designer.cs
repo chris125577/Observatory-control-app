@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Obsyform));
             this.settupgroup = new System.Windows.Forms.GroupBox();
             this.btnRelaySel = new System.Windows.Forms.Button();
@@ -117,6 +117,15 @@
             this.btnForcePark = new System.Windows.Forms.Button();
             this.btnForceHome = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.LatitudeIP = new System.Windows.Forms.TextBox();
+            this.ElevationIP = new System.Windows.Forms.TextBox();
+            this.LongitudeIP = new System.Windows.Forms.TextBox();
+            this.GuideRate = new System.Windows.Forms.NumericUpDown();
             this.settupgroup.SuspendLayout();
             this.connectgroup.SuspendLayout();
             this.disconnectgroup.SuspendLayout();
@@ -134,6 +143,8 @@
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GuideRate)).BeginInit();
             this.SuspendLayout();
             // 
             // settupgroup
@@ -427,6 +438,7 @@
             this.tabs.Controls.Add(this.setuptab);
             this.tabs.Controls.Add(this.tabPage2);
             this.tabs.Controls.Add(this.tabPage1);
+            this.tabs.Controls.Add(this.tabPage3);
             this.tabs.Location = new System.Drawing.Point(0, 0);
             this.tabs.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.tabs.MinimumSize = new System.Drawing.Size(176, 167);
@@ -1172,29 +1184,29 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.Gray;
             this.chart1.BackSecondaryColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisX.LineWidth = 2;
-            chartArea1.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisX2.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LineWidth = 2;
-            chartArea1.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea1.AxisY2.LineColor = System.Drawing.Color.White;
-            chartArea1.BackColor = System.Drawing.Color.DimGray;
-            chartArea1.BorderWidth = 2;
-            chartArea1.Name = "CloudCover";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisX.LineWidth = 2;
+            chartArea2.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisX2.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea2.AxisY.LineWidth = 2;
+            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY2.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea2.AxisY2.LineColor = System.Drawing.Color.White;
+            chartArea2.BackColor = System.Drawing.Color.DimGray;
+            chartArea2.BorderWidth = 2;
+            chartArea2.Name = "CloudCover";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Location = new System.Drawing.Point(1, 39);
             this.chart1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "CloudCover";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Name = "Cloud";
-            this.chart1.Series.Add(series1);
+            series2.ChartArea = "CloudCover";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Name = "Cloud";
+            this.chart1.Series.Add(series2);
             this.chart1.Size = new System.Drawing.Size(369, 289);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1415,6 +1427,107 @@
             this.label1.TabIndex = 2;
             this.label1.Text = resources.GetString("label1.Text");
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.tabPage3.Controls.Add(this.GuideRate);
+            this.tabPage3.Controls.Add(this.LongitudeIP);
+            this.tabPage3.Controls.Add(this.ElevationIP);
+            this.tabPage3.Controls.Add(this.LatitudeIP);
+            this.tabPage3.Controls.Add(this.label7);
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(376, 336);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "Mount";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label4.Location = new System.Drawing.Point(64, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Latitude";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label5.Location = new System.Drawing.Point(48, 196);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Guide Rate";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label6.Location = new System.Drawing.Point(58, 157);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Elevation";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label7.Location = new System.Drawing.Point(55, 118);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(54, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Longitude";
+            // 
+            // LatitudeIP
+            // 
+            this.LatitudeIP.Location = new System.Drawing.Point(139, 72);
+            this.LatitudeIP.Name = "LatitudeIP";
+            this.LatitudeIP.Size = new System.Drawing.Size(100, 20);
+            this.LatitudeIP.TabIndex = 4;
+            // 
+            // ElevationIP
+            // 
+            this.ElevationIP.Location = new System.Drawing.Point(138, 150);
+            this.ElevationIP.Name = "ElevationIP";
+            this.ElevationIP.Size = new System.Drawing.Size(100, 20);
+            this.ElevationIP.TabIndex = 5;
+            // 
+            // LongitudeIP
+            // 
+            this.LongitudeIP.Location = new System.Drawing.Point(138, 111);
+            this.LongitudeIP.Name = "LongitudeIP";
+            this.LongitudeIP.Size = new System.Drawing.Size(100, 20);
+            this.LongitudeIP.TabIndex = 6;
+            // 
+            // GuideRate
+            // 
+            this.GuideRate.DecimalPlaces = 2;
+            this.GuideRate.Increment = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.GuideRate.Location = new System.Drawing.Point(138, 189);
+            this.GuideRate.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.GuideRate.Name = "GuideRate";
+            this.GuideRate.Size = new System.Drawing.Size(120, 20);
+            this.GuideRate.TabIndex = 7;
+            this.GuideRate.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
             // Obsyform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1429,7 +1542,7 @@
             this.MaximumSize = new System.Drawing.Size(400, 400);
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "Obsyform";
-            this.Text = "Observatory Control Panel v11.3";
+            this.Text = "Observatory Control Panel v11.5";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.settupgroup.ResumeLayout(false);
             this.connectgroup.ResumeLayout(false);
@@ -1452,6 +1565,9 @@
             this.tabPage1.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.GuideRate)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1542,6 +1658,15 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox cloudText;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown GuideRate;
+        private System.Windows.Forms.TextBox LongitudeIP;
+        private System.Windows.Forms.TextBox ElevationIP;
+        private System.Windows.Forms.TextBox LatitudeIP;
     }
 }
 
